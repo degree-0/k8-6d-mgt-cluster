@@ -1,0 +1,39 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  creationTimestamp: "2025-01-06T11:23:05Z"
+  generation: 2
+  name: http01-clusterissuer-secret
+  namespace: cattle-system
+  ownerReferences:
+  - apiVersion: networking.k8s.io/v1
+    blockOwnerDeletion: true
+    controller: true
+    kind: Ingress
+    name: nginx-ingress-rancher
+    uid: 8908fdad-346f-4d4a-830b-b424f6c5267f
+  resourceVersion: "1037560"
+  uid: cffe65a2-400e-424a-a6cd-34185a91da43
+spec:
+  dnsNames:
+  - r.6degrees.com.sa
+  issuerRef:
+    group: cert-manager.io
+    kind: ClusterIssuer
+    name: http01-clusterissuer
+  secretName: http01-clusterissuer-secret
+  usages:
+  - digital signature
+  - key encipherment
+status:
+  conditions:
+  - lastTransitionTime: "2025-01-06T11:24:26Z"
+    message: Certificate is up to date and has not expired
+    observedGeneration: 2
+    reason: Ready
+    status: "True"
+    type: Ready
+  notAfter: "2025-04-06T10:25:54Z"
+  notBefore: "2025-01-06T10:25:55Z"
+  renewalTime: "2025-03-07T10:25:54Z"
+  revision: 1
