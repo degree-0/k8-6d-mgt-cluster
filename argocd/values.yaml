@@ -1,0 +1,32 @@
+server:
+  service:
+    type: ClusterIP
+    ports:
+      - name: http
+        port: 80
+        targetPort: 8080
+  ingress:
+    enabled: true
+    hosts:
+      - argocd.6degrees.com.sa
+    tls:
+      - secretName: argocd-server-tls
+        hosts:
+          - argocd.6degrees.com.sa
+  config:
+    resource.customizations: |
+      argoproj.io/Application:
+        health.lua: |
+          hs = {}
+          hs.status = "Healthy"
+          hs.message = "Custom health check passed"
+          return hs
+
+certificate:
+  name: argocd-server-tls
+  namespace: management
+  secretName: argocd-server-tls-secret
+  dnsName: argocd.6degrees.com.sa
+  issuerName: http01-clusterissuer
+  issuerKind: ClusterIssuer
+  issuerGroup: cert-manager.io

@@ -1,3 +1,22 @@
 USER-SUPPLIED VALUES:
 bootstrapPassword: admin
-hostname: n.basemalaraj.com
+hostname: r.6degrees.com.sa
+ingress:
+  tls:
+    source: secret
+    secretName: rancher-server-tls-secret
+  replicas: 3
+
+certificate:
+  name: rancher-server-tls
+  namespace: cattle-system
+  secretName: rancher-server-tls-secret
+  dnsName: rancher.6degrees.com.sa
+  issuerName: http01-clusterissuer
+  issuerKind: ClusterIssuer
+  issuerGroup: cert-manager.io
+
+# Service configuration (if needed)
+service:
+  type: ClusterIP
+  annotations: {}

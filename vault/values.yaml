@@ -1,0 +1,18 @@
+server:
+  ingress:
+    enabled: true
+    hosts:
+      - host: vault.6degrees.com.sa
+    tls:
+      - secretName: vault-server-tls-secret
+        hosts:
+          - vault.6degrees.com.sa
+
+certificate:
+  name: vault-server-tls
+  namespace: vault
+  secretName: vault-server-tls-secret
+  dnsName: vault.6degrees.com.sa
+  issuerName: http01-clusterissuer
+  issuerKind: ClusterIssuer
+  issuerGroup: cert-manager.io 
