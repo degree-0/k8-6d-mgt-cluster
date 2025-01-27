@@ -1,0 +1,4 @@
+apiVersion: v2
+name: namespaces
+description: Create required namespaces
+version: 0.1.0 

@@ -1,0 +1,30 @@
+controller:
+  ingressClassResource:
+    enabled: false
+  service:
+    enabled: true
+    type: LoadBalancer
+    annotations:
+      service.beta.kubernetes.io/linode-loadbalancer-proxy-protocol: "v2"
+    externalTrafficPolicy: Local
+    loadBalancerIP: "143.42.223.153"
+  config:
+    use-proxy-protocol: "true"
+    proxy-real-ip-cidr: "0.0.0.0/0"
+    use-forwarded-headers: "true"
+  metrics:
+    enabled: true
+    service:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "10254"
+  publishService:
+    enabled: true
+  admissionWebhooks:
+    enabled: false
+
+defaultBackend:
+  enabled: true
+
+rbac:
+  create: true 

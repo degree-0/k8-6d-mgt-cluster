@@ -1,6 +1,6 @@
 # Define Helm repository sources
 repositories:
-  - name: rancher-latest
+  - name: rancher-stable
     url: https://releases.rancher.com/server-charts/stable
   - name: argo
     url: https://argoproj.github.io/argo-helm
@@ -11,34 +11,34 @@ repositories:
 
 # Define Helm releases to be installed
 releases:
-  # Install cert-manager
+  - name: namespaces
+    chart: ./namespaces
+    version: 0.1.0
+    namespace: default
+
   - name: cert-manager
     namespace: cert-manager
     chart: jetstack/cert-manager
     version: v1.14.0
+    needs:
+      - default/namespaces
     values:
       - cert-manager/values.yaml
 
-  # Install Rancher
+  - name: certificates
+    namespace: cert-manager
+    chart: ./certificates
+    needs:
+      - cert-manager/cert-manager
+    values:
+      - certificates/values.yaml
+
+  # Add Rancher
   - name: rancher
     namespace: cattle-system
     chart: rancher-latest/rancher
     version: 2.10.1
+    needs:
+      - cert-manager/certificates
     values:
       - rancher/values.yaml
-
-  # Install ArgoCD
-  - name: argocd
-    namespace: management
-    chart: argo/argo-cd
-    version: 5.36.0
-    values:
-      - argocd/values.yaml
-
-  # Install Vault
-  - name: vault
-    namespace: vault
-    chart: hashicorp/vault
-    version: 0.24.0
-    values:
-      - vault/values.yaml

@@ -1,22 +1,41 @@
-USER-SUPPLIED VALUES:
 bootstrapPassword: admin
 hostname: r.6degrees.com.sa
+
+# Ingress configuration
 ingress:
+  ingressClassName: nginx
   tls:
     source: secret
     secretName: rancher-server-tls-secret
-  replicas: 3
+  extraAnnotations:
+    cert-manager.io/cluster-issuer: "http01-clusterissuer"
+    nginx.org/ssl-backend: "true"
+    nginx.org/proxy-connect-timeout: "30s"
+    nginx.org/proxy-read-timeout: "1800s"
+    nginx.org/proxy-send-timeout: "1800s"
 
-certificate:
-  name: rancher-server-tls
-  namespace: cattle-system
-  secretName: rancher-server-tls-secret
-  dnsName: rancher.6degrees.com.sa
-  issuerName: http01-clusterissuer
-  issuerKind: ClusterIssuer
-  issuerGroup: cert-manager.io
-
-# Service configuration (if needed)
+# Service configuration
 service:
   type: ClusterIP
-  annotations: {}
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+    - name: https
+      port: 443
+      targetPort: 443
+
+# Add node scheduling configuration
+nodeSelector: {}
+tolerations:
+  - key: "node-role.kubernetes.io/control-plane"
+    operator: "Exists"
+    effect: "NoSchedule"
+
+replicas: 3
+
+# Disable PSP
+global:
+  cattle:
+    psp:
+      enabled: false

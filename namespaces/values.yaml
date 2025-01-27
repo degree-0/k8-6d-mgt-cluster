@@ -1,0 +1,5 @@
+namespaces:
+  - name: cert-manager
+  - name: cattle-system
+  - name: management
+  - name: vault 
