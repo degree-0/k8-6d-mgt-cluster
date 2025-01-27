@@ -3,6 +3,8 @@ kind: ApplicationSet
 metadata:
   name: monitoring
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   generators:
     - list:
@@ -10,17 +12,20 @@ spec:
           - name: prometheus
             path: monitoring/prometheus
             namespace: monitoring
-            chart: prometheus-community/kube-prometheus-stack
+            repoURL: https://prometheus-community.github.io/helm-charts
+            chart: kube-prometheus-stack
             version: 55.5.0
           - name: grafana
             path: monitoring/grafana
             namespace: monitoring
-            chart: grafana/grafana
+            repoURL: https://grafana.github.io/helm-charts
+            chart: grafana
             version: 7.0.17
           - name: loki
-            path: monitoring/loki
+            path: monitoring/grafana
             namespace: monitoring
-            chart: grafana/loki
+            repoURL: https://grafana.github.io/helm-charts
+            chart: loki
             version: 5.41.0
   template:
     metadata:
@@ -29,9 +34,12 @@ spec:
     spec:
       project: 6degrees
       source:
-        repoURL: https://github.com/degree-0/6degrees-management-cluster.git
-        targetRevision: HEAD
-        path: "{{ .path }}"
+        repoURL: "{{ .repoURL }}"
+        chart: "{{ .chart }}"
+        targetRevision: "{{ .version }}"
+        helm:
+          valueFiles:
+            - "{{ .path }}/values.yaml"
       destination:
         server: https://kubernetes.default.svc
         namespace: "{{ .namespace }}"

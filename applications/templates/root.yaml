@@ -3,8 +3,10 @@ kind: Application
 metadata:
   name: root
   namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
-  project: default
+  project: 6degrees
   source:
     repoURL: https://github.com/degree-0/6degrees-management-cluster.git
     targetRevision: HEAD
