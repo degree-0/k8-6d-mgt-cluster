@@ -1,3 +1,4 @@
+# Server configuration
 server:
   service:
     type: ClusterIP
@@ -7,12 +8,16 @@ server:
         targetPort: 8080
   ingress:
     enabled: true
+    ingressClassName: nginx
     hosts:
       - argocd.6degrees.com.sa
     tls:
       - secretName: argocd-server-tls
         hosts:
           - argocd.6degrees.com.sa
+    annotations:
+      cert-manager.io/cluster-issuer: "http01-clusterissuer"
+      nginx.org/ssl-backend: "true"
   config:
     resource.customizations: |
       argoproj.io/Application:
@@ -21,12 +26,57 @@ server:
           hs.status = "Healthy"
           hs.message = "Custom health check passed"
           return hs
+  extraArgs:
+    - --insecure
 
-certificate:
-  name: argocd-server-tls
-  namespace: management
-  secretName: argocd-server-tls-secret
-  dnsName: argocd.6degrees.com.sa
-  issuerName: http01-clusterissuer
-  issuerKind: ClusterIssuer
-  issuerGroup: cert-manager.io
+# High availability configuration
+controller:
+  replicas: 1
+
+repoServer:
+  replicas: 1
+
+applicationSet:
+  enabled: true
+  replicas: 1
+
+redis:
+  enabled: true
+
+# RBAC configuration
+rbac:
+  create: true
+  pspEnabled: false
+
+# Configure SSO (if needed)
+dex:
+  enabled: false
+
+# Configure notifications
+notifications:
+  enabled: true
+
+# Configure HA and resource limits
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 250m
+    memory: 256Mi
+
+# Configure metrics
+metrics:
+  enabled: true
+  serviceMonitor:
+    enabled: false
+
+# Configure high availability
+ha:
+  enabled: true
+
+# Configure backup
+backup:
+  enabled: false
+
+  

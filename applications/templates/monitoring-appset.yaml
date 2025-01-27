@@ -1,0 +1,43 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: monitoring
+  namespace: argocd
+spec:
+  generators:
+    - list:
+        elements:
+          - name: prometheus
+            path: monitoring/prometheus
+            namespace: monitoring
+            chart: prometheus-community/kube-prometheus-stack
+            version: 55.5.0
+          - name: grafana
+            path: monitoring/grafana
+            namespace: monitoring
+            chart: grafana/grafana
+            version: 7.0.17
+          - name: loki
+            path: monitoring/loki
+            namespace: monitoring
+            chart: grafana/loki
+            version: 5.41.0
+  template:
+    metadata:
+      name: "monitoring-{{ .name }}"
+      namespace: argocd
+    spec:
+      project: 6degrees
+      source:
+        repoURL: https://github.com/degree-0/6degrees-management-cluster.git
+        targetRevision: HEAD
+        path: "{{ .path }}"
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: "{{ .namespace }}"
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true 

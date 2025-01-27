@@ -36,9 +36,40 @@ releases:
   # Add Rancher
   - name: rancher
     namespace: cattle-system
-    chart: rancher-latest/rancher
+    chart: rancher-stable/rancher
     version: 2.10.1
-    needs:
-      - cert-manager/certificates
+    labels:
+      app: rancher
     values:
       - rancher/values.yaml
+    needs:
+      - cert-manager/cert-manager
+      - cert-manager/certificates
+    hooks:
+      - events: ["prepare", "presync"]
+        showlogs: true
+        command: "kubectl"
+        args: ["apply", "-f", "rancher/templates/cluster-schema.yaml"]
+
+  # Add ArgoCD
+  - name: argocd
+    namespace: argocd
+    chart: argo/argo-cd
+    version: 5.51.6
+    labels:
+      app: argocd
+    needs:
+      - default/namespaces
+      - cert-manager/cert-manager
+      - cert-manager/certificates
+    values:
+      - argocd/values.yaml
+
+  # Add Applications
+  - name: applications
+    namespace: argocd
+    chart: ./applications
+    needs:
+      - argocd/argocd
+    labels:
+      app: applications
