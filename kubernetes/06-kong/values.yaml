@@ -1,0 +1,133 @@
+admin:
+  enabled: true
+  http:
+    enabled: true
+    servicePort: 8001
+    containerPort: 8001
+  tls:
+    enabled: true
+    servicePort: 8444
+    containerPort: 8444
+  ingress:
+    enabled: true
+    hostname: admin.kong.6degrees.com.sa
+    ingressClassName: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: http01-clusterissuer
+      nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    tls:
+      - hosts:
+          - admin.kong.6degrees.com.sa
+        secretName: kong-admin-tls
+    path: /
+    pathType: ImplementationSpecific
+
+manager:
+  enabled: true
+  http:
+    enabled: true
+    servicePort: 8002
+    containerPort: 8002
+  tls:
+    enabled: true
+    servicePort: 8445
+    containerPort: 8445
+  ingress:
+    enabled: true
+    hostname: manager.kong.6degrees.com.sa
+    ingressClassName: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: http01-clusterissuer
+      nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    tls:
+      - hosts:
+          - manager.kong.6degrees.com.sa
+        secretName: kong-manager-tls
+    path: /
+    pathType: ImplementationSpecific
+
+portal:
+  enabled: true
+  http:
+    enabled: true
+  tls:
+    enabled: true
+  ingress:
+    enabled: true
+    hostname: portal.kong.6degrees.com.sa
+    ingressClassName: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: http01-clusterissuer
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    tls:
+      - hosts:
+          - portal.kong.6degrees.com.sa
+        secretName: kong-portal-tls
+
+portalapi:
+  enabled: true
+  http:
+    enabled: true
+  tls:
+    enabled: true
+  ingress:
+    enabled: true
+    hostname: portalapi.kong.6degrees.com.sa
+    ingressClassName: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: http01-clusterissuer
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    tls:
+      - hosts:
+          - portalapi.kong.6degrees.com.sa
+        secretName: kong-portalapi-tls
+
+proxy:
+  enabled: true
+  type: ClusterIP
+  http:
+    enabled: true
+    servicePort: 8000
+    containerPort: 8000
+  tls:
+    enabled: true
+    servicePort: 8443
+    containerPort: 8443
+  ingress:
+    enabled: true
+    hostname: api.kong.6degrees.com.sa
+    ingressClassName: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: http01-clusterissuer
+      nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    tls:
+      - hosts:
+          - api.kong.6degrees.com.sa
+        secretName: kong-proxy-tls
+    path: /
+    pathType: ImplementationSpecific
+
+env:
+  database: "postgres"
+
+postgresql:
+  enabled: true
+  auth:
+    username: kong
+    password: kong
+    database: kong
+
+
+enterprise:
+  enabled: false
+
+ingressController:
+  enabled: true
