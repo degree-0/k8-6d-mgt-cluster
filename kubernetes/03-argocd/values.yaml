@@ -701,7 +701,7 @@ controller:
   imagePullSecrets: []
 
   # -- Additional command line arguments to pass to application controller
-  extraArgs: [--insecure]
+  extraArgs: []
 
   # -- Environment variables to pass to application controller
   env: []
