@@ -1,4 +1,0 @@
-apiVersion: v2
-name: certificates
-description: Custom certificates for cluster services
-version: 0.1.0 

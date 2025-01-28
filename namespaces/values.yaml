@@ -1,8 +1,0 @@
-namespaces:
-  - name: cert-manager
-  - name: cattle-system
-  - name: management
-  - name: vault
-  - name: argocd
-  - name: ingress-nginx
-  - name: cattle-global-data

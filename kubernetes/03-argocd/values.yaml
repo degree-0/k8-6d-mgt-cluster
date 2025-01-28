@@ -2228,7 +2228,9 @@ server:
     labels: {}
     # -- Additional ingress annotations
     ## Ref: https://argo-cd.readthedocs.io/en/stable/operator-manual/ingress/#option-1-ssl-passthrough
-    annotations: {}
+    annotations: {
+      cert-manager.io/cluster-issuer: "http01-clusterissuer"
+    }
       # nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
       # nginx.ingress.kubernetes.io/ssl-passthrough: "true"
 
@@ -2248,7 +2250,7 @@ server:
     # -- Enable TLS configuration for the hostname defined at `server.ingress.hostname`
     ## TLS certificate will be retrieved from a TLS secret `argocd-server-tls`
     ## You can create this secret via `certificate` or `certificateSecret` option
-    tls: false
+    tls: true
 
     # -- The list of additional hostnames to be covered by ingress record
     # @default -- `[]` (See [values.yaml])

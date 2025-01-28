@@ -1,0 +1,13 @@
+hostname: rancher.6degrees.com.sa
+replicas: 2
+bootstrapPassword: admin
+ingress:
+  ingressClassName: nginx
+  tls:
+    source: secret
+  extraAnnotations:
+    cert-manager.io/cluster-issuer: "http01-clusterissuer"
+    nginx.org/ssl-backend: "true"
+    nginx.org/proxy-connect-timeout: "30s"
+    nginx.org/proxy-read-timeout: "1800s"
+    nginx.org/proxy-send-timeout: "1800s"

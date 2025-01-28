@@ -1,7 +1,0 @@
-clusterIssuer:
-  name: http01-clusterissuer
-  email: mohannad.otaibi@gmail.com
-  privateKeySecretName: http01-clusterissuer-secret
-  server: https://acme-v02.api.letsencrypt.org/directory
-  ingressClass: nginx
-
