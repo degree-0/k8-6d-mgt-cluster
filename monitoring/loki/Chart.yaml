@@ -1,9 +1,0 @@
-apiVersion: v2
-name: loki
-description: Loki for 6Degrees Management Cluster
-type: application
-version: 0.1.0
-dependencies:
-  - name: loki
-    version: 5.41.0
-    repository: https://grafana.github.io/helm-charts 

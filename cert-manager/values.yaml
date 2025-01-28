@@ -5,8 +5,3 @@ clusterIssuer:
   server: https://acme-v02.api.letsencrypt.org/directory
   ingressClass: nginx
 
-cert-manager:
-  namespace: cert-manager
-  version: v1.16.2
-  installCRDs: true
-  replicaCount: 1

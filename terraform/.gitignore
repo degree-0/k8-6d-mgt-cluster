@@ -1,0 +1,11 @@
+# Terraform files
+.terraform
+*.tfstate
+*.tfstate.*
+terraform.tfvars
+.terraform.lock.hcl
+
+# Crash log files
+crash.log
+crash.*.log 
+kube-config

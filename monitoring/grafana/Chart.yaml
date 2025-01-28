@@ -1,9 +1,0 @@
-apiVersion: v2
-name: grafana
-description: Grafana for 6Degrees Management Cluster
-type: application
-version: 0.1.0
-dependencies:
-  - name: grafana
-    version: 7.0.17
-    repository: https://grafana.github.io/helm-charts 

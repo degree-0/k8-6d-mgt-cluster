@@ -1,6 +1,0 @@
-apiVersion: v2
-name: applications
-description: ArgoCD Applications for 6Degrees Management Cluster
-type: application
-version: 0.1.0
-appVersion: "1.0.0" 

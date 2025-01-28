@@ -64,12 +64,3 @@ releases:
       - cert-manager/certificates
     values:
       - argocd/values.yaml
-
-  # Add Applications
-  - name: applications
-    namespace: argocd
-    chart: ./applications
-    needs:
-      - argocd/argocd
-    labels:
-      app: applications

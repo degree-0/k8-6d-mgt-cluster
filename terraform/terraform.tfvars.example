@@ -1,0 +1,36 @@
+# Linode API token (required)
+# Get it from: https://cloud.linode.com/profile/tokens
+linode_token = "your-linode-api-token"
+
+# Region (optional, defaults to eu-central)
+# Available regions: ap-west, ca-central, ap-southeast, us-central, us-west, us-southeast
+# us-east, eu-west, ap-south, eu-central, ap-northeast
+region = "eu-central"
+
+# Kubernetes version (optional, defaults to 1.28)
+k8s_version = "1.28"
+
+# Cluster label (optional, defaults to 6degrees-cluster)
+label = "6degrees-cluster"
+
+# Tags (optional)
+tags = [
+  "production",
+  "6degrees"
+]
+
+# Node pools configuration (optional)
+# Available types: https://www.linode.com/docs/products/compute/compute-instances/plans/
+pools = [
+  {
+    type  = "g6-standard-2"  # 2 CPU, 4GB RAM
+    count = 3
+    tags  = ["production"]
+  }
+  # Uncomment to add more pools
+  # {
+  #   type  = "g6-standard-4"  # 4 CPU, 8GB RAM
+  #   count = 2
+  #   tags  = ["production", "high-memory"]
+  # }
+] 
