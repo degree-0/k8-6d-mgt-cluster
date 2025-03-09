@@ -7,3 +7,4 @@
 - [x]  implement vault with external secret operator
 - [ ]  convert all postgres to the external server
 - [x]  add Grafana and Prometheus
+- [x]  migrate whatever to argocd.

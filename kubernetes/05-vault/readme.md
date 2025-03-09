@@ -10,7 +10,7 @@ helm search repo hashicorp/vault
 helm show values hashicorp/vault --version 0.29.1 > defaults.yaml
 helm upgrade --install vault hashicorp/vault \
     --namespace "vault" --create-namespace \
-    --set injector.enabled=true \
+    --set injector.enabled=false \
     --set server.ingress.enabled=true \
     --set 'server.ingress.annotations.cert-manager\.io/cluster-issuer=http01-clusterissuer' \
     --set server.ingress.ingressClassName=nginx \
