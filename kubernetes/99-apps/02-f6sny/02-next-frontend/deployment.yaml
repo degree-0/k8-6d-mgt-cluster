@@ -1,0 +1,47 @@
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: f6sny-next-frontend
+    spec:
+      replicas: 2
+      selector:
+        matchLabels:
+          app: f6sny-next-frontend
+          component: frontend
+      template:
+        metadata:
+          labels:
+            app: f6sny-next-frontend
+            component: frontend
+        spec:
+          containers:
+          - name: f6sny-next-frontend
+            image: ghcr.io/f6sny/www.f6sny.com-dev:latest
+            ports:
+              - containerPort: 3000
+            envFrom:
+              - secretRef:
+                  name: f6sny-frontend-secrets
+            resources:
+              requests:
+                memory: "256Mi"
+                cpu: "100m"
+              limits:
+                memory: "512Mi"
+                cpu: "500m"
+            readinessProbe:
+              httpGet:
+                path: /api/health
+                port: 3000
+              initialDelaySeconds: 60
+              periodSeconds: 10
+              timeoutSeconds: 5
+              failureThreshold: 3
+            livenessProbe:
+              httpGet:
+                path: /api/health
+                port: 3000
+              initialDelaySeconds: 90
+              periodSeconds: 20
+              timeoutSeconds: 5
+              failureThreshold: 3

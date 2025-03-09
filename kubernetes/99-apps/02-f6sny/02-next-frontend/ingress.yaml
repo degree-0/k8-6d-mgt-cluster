@@ -1,0 +1,25 @@
+    apiVersion: networking.k8s.io/v1
+    kind: Ingress
+    metadata:
+      name: f6sny-next-frontend-ingress
+      annotations:
+        cert-manager.io/cluster-issuer: http01-clusterissuer
+        nginx.ingress.kubernetes.io/ssl-redirect: "true"
+        nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    spec:
+      ingressClassName: nginx
+      tls:
+        - hosts:
+            - next.f6sny.com
+          secretName: f6sny-next-frontend-tls
+      rules:
+      - host: next.f6sny.com
+        http:
+          paths:
+            - path: /
+              pathType: Prefix
+              backend:
+                service:
+                  name: f6sny-next-frontend
+                  port:
+                    number: 3000
