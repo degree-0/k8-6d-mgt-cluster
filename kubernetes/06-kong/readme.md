@@ -9,11 +9,11 @@ helm repo add kong https://charts.konghq.com
 helm repo update
 helm search repo kong
 helm show values kong/kong --version 2.47.0 > defaults.yaml
-helm upgrade --install kong kong/kong \
-  --namespace kong \
-  --create-namespace \
-  -f values.yaml \
-  --set global.postgresql.auth.postgresPassword=kong
+
+kubectl apply -f external-secrets.yaml
+kubectl get externalsecrets
+
+helm upgrade --install kong kong/kong --namespace kong --create-namespace -f values.yaml
 ```
 
 ## Verification

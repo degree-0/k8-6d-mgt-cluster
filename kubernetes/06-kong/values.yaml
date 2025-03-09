@@ -119,12 +119,11 @@ env:
   database: "postgres"
 
 postgresql:
-  enabled: true
-  auth:
-    username: kong
-    password: kong
-    database: kong
+  enabled: false
 
+envFrom:
+  - secretRef:
+      name: kong-db-secret
 
 enterprise:
   enabled: false

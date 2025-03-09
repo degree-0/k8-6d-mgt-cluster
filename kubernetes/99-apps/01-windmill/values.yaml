@@ -1,0 +1,39 @@
+# windmill root values block
+windmill:
+  baseDomain: windmill.6degrees.com.sa
+  baseProtocol: https
+  databaseUrlSecretName: "windmill-db-secret"
+  databaseUrlSecretKey: url
+  appReplicas: 2
+  lspReplicas: 2
+  workerGroups:
+    - name: "default"
+      replicas: 2
+    - name: "native"
+      replicas: 2
+      resources:
+        requests:
+          memory: "128Mi"
+          cpu: "100m"
+        limits:
+          memory: "256Mi"
+          cpu: "200m"
+
+postgresql:
+  enabled: false
+
+minio:
+  enabled: false
+
+ingress:
+  className: "nginx"
+  annotations: {
+    cert-manager.io/cluster-issuer: "http01-clusterissuer"
+  }
+  tls:
+    - hosts:
+        - "windmill.6degrees.com.sa"
+      secretName: windmill-tls-cert
+
+enterprise:
+  enabled: false

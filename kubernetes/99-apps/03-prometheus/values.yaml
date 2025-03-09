@@ -1,0 +1,40 @@
+# Global settings
+fullnameOverride: prometheus
+
+# Prometheus specific ingress
+prometheus:
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: http01-clusterissuer
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    hosts:
+      - prometheus.6degrees.com.sa
+    paths:
+      - /
+    tls:
+      - hosts:
+          - prometheus.6degrees.com.sa
+        secretName: prometheus-tls
+
+# Grafana specific ingress
+grafana:
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: http01-clusterissuer
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    hosts:
+      - grafana.6degrees.com.sa
+    path: /
+    tls:
+      - hosts:
+          - grafana.6degrees.com.sa
+        secretName: grafana-tls
+  
+  service:
+    type: ClusterIP
