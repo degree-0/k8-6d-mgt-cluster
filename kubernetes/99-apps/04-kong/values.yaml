@@ -116,7 +116,7 @@ proxy:
     pathType: ImplementationSpecific
 
 env:
-  database: "postgres"
+  database: postgres
 
 postgresql:
   enabled: false
