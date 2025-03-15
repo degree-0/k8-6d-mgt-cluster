@@ -1,5 +1,8 @@
 # Windmill
 
+This describes the manual way to implement, however, I moved my implementation
+to argocd.
+
 ## Installation
 
 ```bash
@@ -23,4 +26,3 @@ kubectl get ingress -n windmill
 ## Access
 
 - [Windmill Admin Panel](https://windmill.6degrees.com.sa/)
-
