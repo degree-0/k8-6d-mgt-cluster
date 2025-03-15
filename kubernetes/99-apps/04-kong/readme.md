@@ -1,6 +1,7 @@
 # Kong API Gateway
 
-This component provides API gateway and management capabilities.
+This describes the manual way to implement, however, I moved my implementation
+to argocd. This component provides API gateway and management capabilities.
 
 ## Installation
 
