@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-vault-0          # same name as before
+  namespace: vault
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi         # match the PV capacity
+  volumeName: pvc-aff08b78a96f4ff3  # bind to the existing PV
+  storageClassName: linode-block-storage-retain  # correct storage class
