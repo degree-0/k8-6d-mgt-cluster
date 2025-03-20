@@ -20,11 +20,14 @@ graph TD
     B --> E[ArgoCD]
     B --> F[Rancher]
     B --> G[Vault]
-    C --> H[External Load Balancer]
-    D --> I[Let's Encrypt Certificates]
-    E --> J[GitOps Applications]
-    F --> K[Cluster Management]
-    G --> L[Secrets Management]
+    B --> H[External Secrets]
+    B --> I[Prometheus Stack]
+    C --> J[External Load Balancer]
+    D --> K[Let's Encrypt Certificates]
+    E --> L[GitOps Applications]
+    F --> M[Cluster Management]
+    G --> N[Secrets Management]
+    H --> G[Vault Integration]
 ```
 
 ## Repository Structure
@@ -33,11 +36,17 @@ graph TD
 .
 ├── terraform/               # Infrastructure as Code
 ├── kubernetes/              # Kubernetes components
-│   ├── 01-ingress-nginx/    # Ingress Controller
-│   ├── 02-cert-manager/     # Certificate Management
-│   ├── 03-argocd/           # GitOps Platform
-│   ├── 04-rancher/          # Cluster Management
-│   └── 05-vault/           # Secrets Management
+│   ├── 00-system/          # Core System Components
+│   │   ├── 01-ingress-nginx/  # Ingress Controller
+│   │   ├── 02-cert-manager/   # Certificate Management
+│   │   ├── 03-argocd/        # GitOps Platform
+│   │   ├── 04-rancher/       # Cluster Management
+│   │   ├── 05-vault/         # Secrets Management
+│   │   └── 06-external-secrets/ # External Secrets Operator
+│   └── 99-apps/            # Application Deployments
+│       ├── 01-f6sny/       # F6sny Application Stack
+│       ├── 02-testf6snyapi/# Test API Environment
+│       └── 03-prometheus/  # Monitoring Stack
 ```
 
 ## Getting Started
@@ -58,16 +67,98 @@ terraform init
 terraform apply
 ```
 
-4. Install Kubernetes components:
+4. Install Core Components:
+```bash
+# Install system components in order
+## Install ingress-nginx
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm repo update
+helm upgrade --install ingress ingress-nginx/ingress-nginx
+
+## Install cert-manager
+helm repo add jetstack https://charts.jetstack.io --force-update
+helm upgrade --install cert-manager jetstack/cert-manager \
+  --namespace cert-manager \
+  --create-namespace \
+  --set crds.enabled=true
+
+kubectl apply -f ./kubernetes/02-cert-manager/http01-clusterissuer.yaml
+
+# Install Argocd
+helm repo add argo https://argoproj.github.io/argo-helm
+helm upgrade --install argocd argo/argo-cd \
+  --namespace argocd \
+  --create-namespace \
+  --values ./kubernetes/-3-argocd/values.yaml
+
+# Install Rancher
+helm repo add rancher-latest https://releases.rancher.com/server-charts/latest
+helm upgrade --install rancher rancher-latest/rancher \
+  --namespace cattle-system \
+  --values kubernetes/04-rancher/values.yaml \
+  --create-namespace
+
+# Install Vault
+helm upgrade --install vault hashicorp/vault --namespace "vault" --create-namespace \
+    --set injector.enabled=false \
+    --set server.ingress.enabled=true \
+    --set 'server.ingress.annotations.cert-manager\.io/cluster-issuer=http01-clusterissuer' \
+    --set server.ingress.ingressClassName=nginx \
+    --set server.ingress.hosts[0].host=vault.6degrees.com.sa \
+    --set server.ingress.tls[0].hosts[0]=vault.6degrees.com.sa \
+    --set server.ingress.tls[0].secretName=vault-tls-cert
+
+kubectl exec -n vault -it vault-0 -- vault operator init
+
+
+# Install External Secrets Operator
+helm repo add external-secrets https://charts.external-secrets.io
+helm upgrade --install external-secrets external-secrets/external-secrets \
+  --namespace external-secrets \
+  --create-namespace \
+  --values ./kubernetes/-7-external-secrets/values.yaml
+
+## Create a policy in Vault
+kubectl exec -it -n vault vault-0 -- /bin/sh
+vault policy write external-secrets - <<EOF
+path "kv/data/*" {
+  capabilities = ["read"]
+}
+EOF
+
+## Create a token with the policy
+vault token create -policy=external-secrets
+
+## Store the Vault token as a Kubernetes secret
+kubectl create namespace external-secrets
+kubectl create secret generic vault-token \
+  --namespace external-secrets \
+  --from-literal=token=<hvs.your-vault-token-here>
+
+## Apply the ClusterSecretStore configuration
+kubectl apply -f ./kubernetes/07-external-secrets/cluster-secret-store.yaml
+
+# Install Longhorn
+helm repo add longhorn https://charts.longhorn.io/
+helm repo update
+
+kubectl apply -f ./kubernetes/08-longhorn/external-secrets.yaml
+kubectl get externalsecrets
+
+helm upgrade --install longhorn longhorn/longhorn --namespace longhorn --create-namespace -f ./kubernetes/08-longhorn/values.yaml
+
+
 ```
+
 
 ## Security Considerations
 
-- Use least-privilege access
-- Rotate secrets regularly
-- Implement network policies
-- Enable audit logging
-- Use TLS for all components
+- [ ] Use least-privilege access
+- [ ] Rotate secrets regularly
+- [ ] Implement network policies
+- [ ] Enable audit logging
+- [x] Use TLS for all components
+- [x] Utilize External Secrets for sensitive data
 
 ## Maintenance
 
@@ -76,9 +167,11 @@ terraform apply
 - Monitor certificate expiration
 - Backup Vault data
 - Review access controls
+- Check External Secrets sync status
 
 ### Monitoring
-- Set up Prometheus and Grafana
+- Access Prometheus at prometheus.domain.com
+- Access Grafana at grafana.domain.com
 - Configure alerts for critical components
 - Monitor resource usage
 
@@ -88,21 +181,23 @@ terraform apply
 - Certificate renewal failures
 - Vault unseal required
 - ArgoCD sync conflicts
-- Rancher cluster connectivity
+- External Secrets sync failures
+- Pod readiness issues
 
-### Logs
+### Debug Commands
 ```bash
+# Check pod status
+kubectl get pods -A
+
+# Check external secrets
+kubectl get externalsecret -A
+
+# View pod logs
 kubectl logs -n <namespace> <pod-name>
+
+# Check ingress status
+kubectl get ingress -A
 ```
-
-### Cluster Status
-```bash
-kubectl get all -A
-```
-
-## License
-
-MIT License
 
 ## Contributing
 
@@ -114,3 +209,8 @@ MIT License
 
 ## Credits
 - [Basem Alaraj](https://gitlab.com/basemitdept)
+  Special thanks to this invisible soldier.
+
+## License
+
+MIT License

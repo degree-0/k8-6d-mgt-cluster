@@ -5,13 +5,15 @@ metadata:
 spec:
   project: default
   source:
-    chart: kong
-    repoURL: https://charts.bitnami.com/bitnami
+    repoURL: https://charts.konghq.com
     targetRevision: 2.47.0
     helm:
-    valueFiles:
-    - values.yaml
-
+      valuesFile: ./values.yaml
+    chart: kong
   destination:
-    name: "in-cluster"
+    server: https://kubernetes.default.svc
     namespace: kong
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

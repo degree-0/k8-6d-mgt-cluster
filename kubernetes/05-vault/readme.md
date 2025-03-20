@@ -8,8 +8,7 @@ This component provides secure secret storage and management.
 helm repo add hashicorp https://helm.releases.hashicorp.com
 helm search repo hashicorp/vault
 helm show values hashicorp/vault --version 0.29.1 > defaults.yaml
-helm upgrade --install vault hashicorp/vault \
-    --namespace "vault" --create-namespace \
+helm upgrade --install vault hashicorp/vault --namespace "vault" --create-namespace \
     --set injector.enabled=false \
     --set server.ingress.enabled=true \
     --set 'server.ingress.annotations.cert-manager\.io/cluster-issuer=http01-clusterissuer' \
