@@ -1,8 +1,3 @@
-# Kong values configuration
-ingressController:
-  enabled: true
-  installCRDs: false
-
 admin:
   enabled: true
   http:
@@ -133,37 +128,5 @@ envFrom:
 enterprise:
   enabled: false
 
-
-
-readinessProbe:
-  httpGet:
-    path: /status
-    port: status
-  initialDelaySeconds: 5
-  timeoutSeconds: 5
-
-livenessProbe:
-  httpGet:
-    path: /status
-    port: status
-  initialDelaySeconds: 10
-  timeoutSeconds: 5
-
-serviceMonitor:
+ingressController:
   enabled: true
-
-ingress:
-  enabled: true
-  ingressClassName: nginx
-  annotations:
-    cert-manager.io/cluster-issuer: http01-clusterissuer
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
-  hosts:
-    - host: kong.6degrees.com.sa
-      paths:
-        - path: /
-          pathType: Prefix
-  tls:
-    - secretName: kong-tls
-      hosts:
-        - kong.6degrees.com.sa
