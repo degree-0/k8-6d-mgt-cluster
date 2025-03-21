@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: kong
+  name: kong-proxy
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "1"  # External secrets should be wave 0
@@ -9,14 +9,12 @@ spec:
   apiVersion: argoproj.io/v1alpha1
   kind: Application
   metadata:
-    name: kong
+    name: kong-proxy
   spec:
     destination:
-      name: ''
       namespace: kong
       server: https://kubernetes.default.svc
     source:
-      path: ''
       repoURL: https://charts.konghq.com
       targetRevision: 2.47.0
       chart: kong
