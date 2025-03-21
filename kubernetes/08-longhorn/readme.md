@@ -24,3 +24,7 @@ kubectl get ingress -n longhorn
 ## Access
 
 - [Longhorn UI](https://longhorn.6degrees.com.sa/)
+
+## Troubleshooting
+- [Mount Volume](https://longhorn.io/docs/archives/1.2.3/advanced-resources/data-recovery/export-from-replica/)
+

@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: kong-proxy
+  name: kong
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "1"  # External secrets should be wave 0

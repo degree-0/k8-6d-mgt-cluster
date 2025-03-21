@@ -13,3 +13,5 @@
   - [x]  Argocd
 - [x]  add Grafana and Prometheus
 - [x]  migrate whatever to argocd.
+- [ ]  Enable backup in longhorn
+- [ ]  Add auth to kong proxy api and the manager
