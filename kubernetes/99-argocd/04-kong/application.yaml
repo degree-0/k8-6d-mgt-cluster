@@ -8,12 +8,14 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://charts.konghq.com
-    targetRevision: 2.47
-    chart: kong
+    repoURL: https://github.com/mo9a7i/6degrees-management-cluster.git
+    targetRevision: HEAD
+    path: kubernetes/99-argocd/04-kong
     helm:
+      releaseName: kong
       valueFiles:
-        - chart/values.yaml
+        - values.yaml
+      version: v3
   destination:
     server: https://kubernetes.default.svc
     namespace: kong
