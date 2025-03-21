@@ -6,22 +6,29 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "1"  # External secrets should be wave 0
 spec:
-  project: default
-  source:
-    repoURL: https://github.com/mo9a7i/6degrees-management-cluster.git
-    targetRevision: HEAD
-    path: kubernetes/99-argocd/04-kong
-    helm:
-      releaseName: kong
-      valueFiles:
-        - values.yaml
-      version: v3
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: kong
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
+  apiVersion: argoproj.io/v1alpha1
+  kind: Application
+  metadata:
+    name: kong
+  spec:
+    destination:
+      name: ''
+      namespace: kong
+      server: https://kubernetes.default.svc
+    source:
+      path: ''
+      repoURL: https://charts.konghq.com
+      targetRevision: 2.47.0
+      chart: kong
+      helm:
+        valueFiles:
+          - values.yaml
+    sources: []
+    project: default
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+      syncOptions:
+        - CreateNamespace=true
+        - Replace=true
