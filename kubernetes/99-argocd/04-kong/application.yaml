@@ -2,14 +2,18 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: kong
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"  # External secrets should be wave 0
 spec:
   project: default
   source:
     repoURL: https://charts.konghq.com
-    targetRevision: 2.47.0
-    helm:
-      valuesFile: ./values.yaml
+    targetRevision: 2.29.0
     chart: kong
+    helm:
+      valueFiles:
+        - chart/values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: kong
@@ -17,3 +21,5 @@ spec:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
