@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://charts.konghq.com
-    targetRevision: 2.29.0
+    targetRevision: 2.47
     chart: kong
     helm:
       valueFiles:
