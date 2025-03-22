@@ -1,3 +1,4 @@
+# Kong Admin API provides a RESTful interface for administration and configuration of Gateway entities such as services, routes, plugins, consumers, and more. All of the tasks you can perform against the Gateway can be automated using the Kong Admin API.
 admin:
   enabled: true
   http:
@@ -17,6 +18,10 @@ admin:
       nginx.ingress.kubernetes.io/backend-protocol: HTTPS
       nginx.ingress.kubernetes.io/ssl-redirect: "true"
       nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/auth-type: basic
+      nginx.ingress.kubernetes.io/auth-secret: kong-auth-secret
+      nginx.ingress.kubernetes.io/auth-realm: "Authentication Required"
+
     tls:
       - hosts:
           - admin.kong.6degrees.com.sa
@@ -24,6 +29,7 @@ admin:
     path: /
     pathType: ImplementationSpecific
 
+# Kong Manager is the graphical user interface (GUI) for Kong Gateway. It uses the Kong Admin API under the hood to administer and control Kong Gateway.
 manager:
   enabled: true
   http:
@@ -43,12 +49,17 @@ manager:
       nginx.ingress.kubernetes.io/backend-protocol: HTTPS
       nginx.ingress.kubernetes.io/ssl-redirect: "true"
       nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/auth-type: basic
+      nginx.ingress.kubernetes.io/auth-secret: kong-auth-secret
+      nginx.ingress.kubernetes.io/auth-realm: "Authentication Required"
+
     tls:
       - hosts:
           - manager.kong.6degrees.com.sa
         secretName: kong-manager-tls
     path: /
     pathType: ImplementationSpecific
+
 
 portal:
   enabled: true
@@ -69,6 +80,7 @@ portal:
           - portal.kong.6degrees.com.sa
         secretName: kong-portal-tls
 
+
 portalapi:
   enabled: true
   http:
@@ -87,6 +99,7 @@ portalapi:
       - hosts:
           - portalapi.kong.6degrees.com.sa
         secretName: kong-portalapi-tls
+
 
 proxy:
   enabled: true
@@ -126,7 +139,8 @@ envFrom:
       name: kong-db-secret
 
 enterprise:
-  enabled: false
+  enabled: true
+  license_secret: kong-enterprise-license
 
 ingressController:
   enabled: true

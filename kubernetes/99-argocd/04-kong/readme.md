@@ -10,6 +10,7 @@ helm repo add kong https://charts.konghq.com
 helm repo update
 helm search repo kong
 helm show values kong/kong --version 2.47.0 > defaults.yaml
+kubectl create secret generic kong-enterprise-license --from-literal=license="'{}'" -n kong
 
 kubectl apply -f external-secrets.yaml
 kubectl get externalsecrets
