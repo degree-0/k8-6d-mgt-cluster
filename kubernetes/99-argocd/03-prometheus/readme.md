@@ -20,8 +20,3 @@ helm upgrade --install prometheus prometheus-community/kube-prometheus-stack /
 kubectl get all -n prometheus
 kubectl get ingress -n prometheus
 ```
-
-## Access
-
-- [Windmill Admin Panel](https://promoetheus.6degrees.com.sa/)
-
