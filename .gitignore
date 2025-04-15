@@ -1,1 +1,3 @@
 kubernetes/99-apps/01-windmil/values.yaml
+kubernetes/03-argocd/argocd-rbac-cm.yml
+kubernetes/03-argocd/argocd-cm.yaml
