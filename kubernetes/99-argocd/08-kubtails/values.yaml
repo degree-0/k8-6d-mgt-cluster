@@ -1,0 +1,24 @@
+kubetail:
+  dashboard:
+    ingress:
+      enabled: true
+      className: nginx
+      rules:
+        - host: kubetail.6degrees.com.sa
+          http:
+            paths:
+              - path: /
+                pathType: ImplementationSpecific
+      annotations:
+        cert-manager.io/cluster-issuer: http01-clusterissuer
+        nginx.ingress.kubernetes.io/ssl-redirect: "true"
+        nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+      hosts:
+        - kubetail.6degrees.com.sa
+      path: /
+      tls:
+        - hosts:
+            - kubetail.6degrees.com.sa
+          secretName: kubetail-tls
+
+
