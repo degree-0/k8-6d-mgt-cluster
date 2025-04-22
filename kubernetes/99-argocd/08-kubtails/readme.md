@@ -8,8 +8,5 @@ helm repo update
 helm search repo kubetail
 helm show values kubetail/kubetail --version 0.9.13 > defaults.yaml
 
-kubectl apply -f external-secrets.yaml
-kubectl get externalsecrets
-
-helm upgrade --install longhorn longhorn/longhorn --namespace longhorn --create-namespace -f values.yaml
+helm upgrade --install kubetail kubetail/kubetail --namespace kubetail --create-namespace -f values.yaml
 ```

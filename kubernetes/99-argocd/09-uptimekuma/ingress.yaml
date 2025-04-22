@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: uptime-kuma
+  namespace: six-degrees-apps
+  annotations:
+    cert-manager.io/cluster-issuer: http01-clusterissuer
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+spec:
+  ingressClassName: nginx
+
+  tls:
+    - hosts:
+        - up.monitoring.6degrees.com.sa
+      secretName: uptime-kuma-tls
+  rules:
+    - host: up.monitoring.6degrees.com.sa
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: uptime-kuma-tcp
+                port:
+                  number: 3001
