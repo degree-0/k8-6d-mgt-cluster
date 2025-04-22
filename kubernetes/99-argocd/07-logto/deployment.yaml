@@ -26,7 +26,7 @@ spec:
             - /bin/sh
           args:
             - '-c'
-            - 'npm run cli db seed -- --swe && npm start'
+            - 'echo $DB_URL && npm run cli db seed -- --swe && npm start'
           name: init
 
       containers:
