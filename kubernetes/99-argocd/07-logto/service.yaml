@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: logto
-  namespace: logto
+  namespace: six-degrees-apps
 spec:
   selector:
     app: logto

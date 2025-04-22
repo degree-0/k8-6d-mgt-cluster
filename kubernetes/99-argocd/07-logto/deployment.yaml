@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: logto
-  namespace: logto
+  namespace: six-degrees-apps
   labels:
     app: logto
 spec:

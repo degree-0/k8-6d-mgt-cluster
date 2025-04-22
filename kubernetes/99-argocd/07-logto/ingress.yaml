@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: logto
-  namespace: logto
+  namespace: six-degrees-apps
   annotations:
     cert-manager.io/cluster-issuer: http01-clusterissuer
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
