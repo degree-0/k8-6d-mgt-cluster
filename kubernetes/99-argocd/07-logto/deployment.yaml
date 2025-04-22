@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: logto
+  namespace: logto
+  labels:
+    app: logto
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: logto
+  template:
+    metadata:
+      labels:
+        app: logto
+    spec:
+      volumes:
+        - name: connectors
+          emptyDir: {}
+      initContainers:
+        - image: svhd/logto:latest
+          command:
+            - /bin/sh
+          args:
+            - '-c'
+            - 'npm run cli db seed -- --swe && npm start'
+          name: init
+
+      containers:
+        - image: svhd/logto:latest
+          name: logto
+          envFrom:
+            - secretRef:
+                name: logto-secrets
+            - configMapRef:
+                name: logto-configmap
+

@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: logto-configmap
+  namespace: logto
+data:
+  ADMIN_ENDPOINT: "https://logto-admin.6degrees.com.sa"
+  ENDPOINT: "https://logto.6degrees.com.sa"
+  TRUST_PROXY_HEADER: "true"
