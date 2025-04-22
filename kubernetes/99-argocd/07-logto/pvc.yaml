@@ -3,6 +3,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: logto-connectors
   namespace: six-degrees-apps
+  annotations: # skip sync for argo
+    argocd.argoproj.io/sync-wave: "-1"
 spec:
   accessModes:
     - ReadWriteOnce
