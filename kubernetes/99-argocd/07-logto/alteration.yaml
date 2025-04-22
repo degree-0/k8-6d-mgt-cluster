@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: alteration
+spec:
+  template:
+    spec:
+      containers:
+        - name: alteration
+          image: ghcr.io/logto-io/logto
+          imagePullPolicy: Always
+          envFrom:
+            - secretRef:
+                name: logto-secrets
+          command:
+            - /bin/sh
+          args:
+            - '-c'
+            - 'npm run alteration deploy latest'
+      restartPolicy: Never

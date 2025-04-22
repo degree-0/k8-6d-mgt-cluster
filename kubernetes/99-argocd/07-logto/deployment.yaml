@@ -19,27 +19,46 @@ spec:
     spec:
       volumes:
         - name: connectors
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: logto-connectors
       initContainers:
-        - image: svhd/logto:latest
+        - image: ghcr.io/logto-io/logto
           command:
             - /bin/sh
           args:
             - '-c'
-            - 'echo $DB_URL && npm run cli db seed -- --swe && npm start'
+            - 'npm run cli connector add -- --official'
           name: init
-          envFrom:
-            - secretRef:
-                name: logto-secrets
-            - configMapRef:
-                name: logto-configmap
-
+          volumeMounts:
+            - name: connectors
+              mountPath: /etc/logto/connectors
       containers:
-        - image: svhd/logto:latest
+        - image: ghcr.io/logto-io/logto
           name: logto
+          volumeMounts:
+            - name: connectors
+              mountPath: /etc/logto/connectors
           envFrom:
             - secretRef:
                 name: logto-secrets
             - configMapRef:
                 name: logto-configmap
+      livenessProbe:
+        httpGet:
+          path: /api/status
+          port: 3001
+        initialDelaySeconds: 30
+        periodSeconds: 10
+        timeoutSeconds: 5
+        failureThreshold: 6
+      readinessProbe:
+        httpGet:
+          path: /api/status
+          port: 3001
+        initialDelaySeconds: 5
+        periodSeconds: 10
+        timeoutSeconds: 5
+        failureThreshold: 3
+
+
 
