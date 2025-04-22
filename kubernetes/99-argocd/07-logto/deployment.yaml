@@ -28,6 +28,11 @@ spec:
             - '-c'
             - 'echo $DB_URL && npm run cli db seed -- --swe && npm start'
           name: init
+          envFrom:
+            - secretRef:
+                name: logto-secrets
+            - configMapRef:
+                name: logto-configmap
 
       containers:
         - image: svhd/logto:latest
