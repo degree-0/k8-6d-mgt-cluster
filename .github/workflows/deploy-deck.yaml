@@ -1,0 +1,46 @@
+name: Deploy Kong changes to PRD
+
+on:
+    push:
+        branches:
+            - main
+        paths:
+            - 'kubernetes/99-argocd/04-kong/01-config/**'
+
+jobs:
+    deploy-kong:
+        name: Deploy Kong to PRD
+        runs-on: ubuntu-latest
+        
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+            
+            - name: decK ping
+              id: decK_ping
+              uses: ./
+              with:
+                command: "ping"
+                options: "--kong-addr ${{ secrets.KONG_ADDR }} --headers ${{ secrets.KONG_AUTH }}"
+
+            - name: Setup deck
+              uses: kong/setup-deck@v1
+              with:
+                deck-version: '1.11.0'
+                wrapper: true
+
+            # deck file merge one.yaml two.yaml -o complete.yaml
+            - name: Merge config files
+              run: |
+                deck file merge kubernetes/99-argocd/04-kong/01-config/*.yaml -o merged-config.yaml
+
+            - name: validate
+              run: |
+                deck gateway validate merged-config.yaml --kong-addr ${{ secrets.KONG_ADDR }} --headers ${{ secrets.KONG_AUTH }}
+
+            - name: deck sync
+              run: |
+                deck sync --select-tag platform-repo-managed \
+                   -s kubernetes/99-argocd/04-kong/01-config/*.yaml \
+                   --kong-addr ${{ secrets.KONG_ADDR }} \
+                   --headers ${{ secrets.KONG_AUTH }}

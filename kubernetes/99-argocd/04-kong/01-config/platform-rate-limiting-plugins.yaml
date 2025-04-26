@@ -1,0 +1,12 @@
+_format_version: '3.0'
+_info:
+ select_tags:
+   - plugins-rate-limit
+ default_lookup_tags:
+  services:
+    - team-a
+plugins:
+  - name: rate-limiting
+    service: typicode-posts
+    config:
+      minute: 10

@@ -1,0 +1,11 @@
+# consumers.yaml
+# Managed by a central team
+_format_version: '3.0'
+_info:
+ select_tags:
+ - consumers
+consumers:
+  - username: mohannad-admin
+    custom_id: SOME_CUSTOM_ID
+    keyauth_credentials:
+      - key: apikeyapikeyapikey

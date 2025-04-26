@@ -1,0 +1,15 @@
+# team-a.yaml
+# Contains services + routes
+_format_version: '3.0'
+_info:
+ select_tags:
+ - team-a
+services:
+  - name: typicode-posts
+    host: jsonplaceholder.typicode.com
+    path: /posts
+    routes:
+      - name: Passthrough
+        methods:
+        - GET
+        paths: [/dummy-posts]
