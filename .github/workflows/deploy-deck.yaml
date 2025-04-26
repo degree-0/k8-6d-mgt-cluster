@@ -6,6 +6,7 @@ on:
             - main
         paths:
             - 'kubernetes/99-argocd/04-kong/01-config/**'
+            - '.github/workflows/deploy-deck.yaml'
 
 jobs:
     deploy-kong:
