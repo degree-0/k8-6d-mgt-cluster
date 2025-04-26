@@ -41,6 +41,6 @@ jobs:
 
             - name: deck sync
               run: |
-                deck sync -s kubernetes/99-argocd/04-kong/01-config/merged.yaml \
+                deck gateway sync kubernetes/99-argocd/04-kong/01-config/merged.yaml \
                    --kong-addr ${{ secrets.KONG_ADDR }} \
                    --headers ${{ secrets.KONG_AUTH }}
