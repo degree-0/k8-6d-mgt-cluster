@@ -37,11 +37,10 @@ jobs:
 
             - name: validate
               run: |
-                deck gateway validate merged-config.yaml --kong-addr ${{ secrets.KONG_ADDR }} --headers ${{ secrets.KONG_AUTH }}
+                deck gateway validate kubernetes/99-argocd/04-kong/01-config/merged.yaml --kong-addr ${{ secrets.KONG_ADDR }} --headers ${{ secrets.KONG_AUTH }}
 
             - name: deck sync
               run: |
-                deck sync --select-tag platform-repo-managed \
-                   -s kubernetes/99-argocd/04-kong/01-config/*.yaml \
+                deck sync -s kubernetes/99-argocd/04-kong/01-config/merged.yaml \
                    --kong-addr ${{ secrets.KONG_ADDR }} \
                    --headers ${{ secrets.KONG_AUTH }}
