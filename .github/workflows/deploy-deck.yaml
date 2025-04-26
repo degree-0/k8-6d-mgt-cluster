@@ -18,7 +18,7 @@ jobs:
             
             - name: decK ping
               id: decK_ping
-              uses: ./
+              uses: ikeike443/decK-action@master
               with:
                 command: "ping"
                 options: "--kong-addr ${{ secrets.KONG_ADDR }} --headers ${{ secrets.KONG_AUTH }}"
