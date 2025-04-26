@@ -16,30 +16,28 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v3
-            
-            - name: decK ping
-              id: decK_ping
-              uses: ikeike443/decK-action@master
-              with:
-                command: "gateway ping"
-                options: "--kong-addr ${{ secrets.KONG_ADDR }} --headers ${{ secrets.KONG_AUTH }}"
 
             - name: Setup deck
               uses: kong/setup-deck@v1
               with:
                 deck-version: '1.46.3'
                 wrapper: true
-
-            # deck file merge one.yaml two.yaml -o complete.yaml
+            
+            - name: Ping Kong Gateway
+              run: |
+                deck gateway ping --kong-addr ${{ secrets.KONG_ADDR }} --headers ${{ secrets.KONG_AUTH }}
+                
             - name: Merge config files
               run: |
                 deck file merge kubernetes/99-argocd/04-kong/01-config/*.yaml -o kubernetes/99-argocd/04-kong/01-config/merged.yaml
 
-            - name: validate
+            - name: Validate merged config
               run: |
-                deck gateway validate kubernetes/99-argocd/04-kong/01-config/merged.yaml --kong-addr ${{ secrets.KONG_ADDR }} --headers '${{ secrets.KONG_AUTH }}'
+                deck gateway validate kubernetes/99-argocd/04-kong/01-config/merged.yaml \
+                 --kong-addr ${{ secrets.KONG_ADDR }} \
+                 --headers ${{ secrets.KONG_AUTH }}
 
-            - name: deck sync
+            - name: Sync changes to Kong Gateway
               run: |
                 deck gateway sync kubernetes/99-argocd/04-kong/01-config/merged.yaml \
                    --kong-addr ${{ secrets.KONG_ADDR }} \
