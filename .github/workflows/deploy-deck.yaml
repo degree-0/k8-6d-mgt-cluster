@@ -27,13 +27,13 @@ jobs:
             - name: Setup deck
               uses: kong/setup-deck@v1
               with:
-                deck-version: '1.11.0'
+                deck-version: '1.46.3'
                 wrapper: true
 
             # deck file merge one.yaml two.yaml -o complete.yaml
             - name: Merge config files
               run: |
-                deck file merge kubernetes/99-argocd/04-kong/01-config/*.yaml -o merged-config.yaml
+                deck file merge kubernetes/99-argocd/04-kong/01-config/*.yaml -o kubernetes/99-argocd/04-kong/01-config/merged.yaml
 
             - name: validate
               run: |
