@@ -25,7 +25,9 @@ jobs:
             
             - name: Ping Kong Gateway
               run: |
-                deck gateway ping --kong-addr="${{ secrets.KONG_ADDR }}" --headers="${{ secrets.KONG_AUTH }}"
+                deck gateway ping \
+                  --kong-addr="${{ secrets.KONG_ADDR }}" \
+                  --headers="${{ secrets.KONG_AUTH }}"
 
                 
             - name: Merge config files
