@@ -1,28 +1,22 @@
-# windmill root values block
 windmill:
   baseDomain: windmill.6degrees.com.sa
   baseProtocol: https
   databaseUrlSecretName: "windmill-db-secret"
   databaseUrlSecretKey: url
-  appReplicas: 2
-  lspReplicas: 2
+  appReplicas: 1
+  lspReplicas: 1
   workerGroups:
     - name: "default"
-      replicas: 2
+      replicas: 1
+      extraEnv:
+        - name: "INIT_SCRIPT"
+          value: "apt-get update && apt-get install -y chromium"
+        - name: "WORKER_TAGS"
+          value: "chromium"
     - name: "native"
-      replicas: 2
-      resources:
-        requests:
-          memory: "128Mi"
-          cpu: "100m"
-        limits:
-          memory: "256Mi"
-          cpu: "200m"
+      replicas: 0
 
 postgresql:
-  enabled: false
-
-minio:
   enabled: false
 
 ingress:
@@ -34,6 +28,3 @@ ingress:
     - hosts:
         - "windmill.6degrees.com.sa"
       secretName: windmill-tls-cert
-
-enterprise:
-  enabled: false
