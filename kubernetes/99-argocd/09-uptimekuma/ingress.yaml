@@ -11,10 +11,10 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - up.monitoring.6degrees.com.sa
+        - up.6degrees.com.sa
       secretName: uptime-kuma-tls
   rules:
-    - host: up.monitoring.6degrees.com.sa
+    - host: up.6degrees.com.sa
       http:
         paths:
           - path: /
