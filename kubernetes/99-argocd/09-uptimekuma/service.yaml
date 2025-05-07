@@ -4,8 +4,7 @@ metadata:
   name: uptime-kuma-tcp
   namespace: six-degrees-apps
 spec:
-  type: LoadBalancer
-  loadBalancerIP: <LB-IP>
+  type: ClusterIP
   ports:
   - name: web-ui
     protocol: TCP

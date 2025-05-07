@@ -1,0 +1,21 @@
+global:
+  storageClass: "longhorn-single"
+signoz:
+  ingress:
+    enabled: true
+    className: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: http01-clusterissuer
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    hosts:
+      - host: signoz.6degrees.com.sa
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            port: 8080
+    tls:
+      - hosts:
+          - signoz.6degrees.com.sa
+        secretName: signoz-tls
+
