@@ -1,0 +1,33 @@
+global:
+  prometheus:
+    enabled: false
+    fqdn: http://prometheus.prometheus.svc.cluster.local
+  grafana:
+    enabled: false
+    domainName: grafana.prometheus.svc.cluster.local  # Address to Grafana. Ignored if enabled=true.
+
+kubecostToken: "aGVsbUBrdWJlY29zdC5jb20=xm343yadf98"
+
+kubecostFrontend:
+  ipv6:
+    enabled: false
+
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    cert-manager.io/cluster-issuer: http01-clusterissuer
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+  hosts:
+    - kubecost.6degrees.com.sa
+  tls:
+    - hosts:
+        - kubecost.6degrees.com.sa
+      secretName: kubecost-tls
+
+persistentVolume:
+  size: 1Gi
+  enabled: true
+  storageClass: "longhorn-single"
