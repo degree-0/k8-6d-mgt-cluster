@@ -21,7 +21,7 @@ crds:
   additionalLabels: {}
 
 global:
-  domain: argocd.example.com
+  domain: argocd.6degrees.com.sa
 
   runtimeClassName: ""
 

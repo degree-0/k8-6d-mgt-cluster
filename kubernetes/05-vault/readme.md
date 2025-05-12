@@ -25,7 +25,6 @@ helm upgrade --install vault hashicorp/vault --namespace "vault" --create-namesp
 ```bash
 kubectl exec -n vault -it vault-0 -- vault operator init
 ```
-
 2. Unseal Vault using the provided keys
 
 3. Create authentication methods

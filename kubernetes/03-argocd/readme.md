@@ -58,7 +58,7 @@ kubectl delete secret argocd-initial-admin-secret -n argocd
 # add the user
 $ kubectl get configmap argocd-cm -n argocd -o yaml > argocd-cm.yaml
 # apply it
-$ kubectl apply -n argocd  -f argocd-cm.yaml
+$ kubectl apply -n argocd -f argocd-cm.yaml
 # give them permission
 $ kubectl get configmap argocd-rbac-cm -n argocd -o yaml > argocd-rbac-cm.yml
 # apply it

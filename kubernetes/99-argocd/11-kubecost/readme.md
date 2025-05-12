@@ -9,5 +9,5 @@ helm repo update
 helm search repo kubecost
 helm show values kubecost/cost-analyzer --version 2.7.2 > defaults.yaml
 
-helm upgrade --install signoz signoz/signoz --namespace signoz --create-namespace --wait --timeout 1h -f values.yaml
+helm upgrade --install kubecost kubecost/cost-analyzer --namespace kubecost --create-namespace  -f values.yaml
 ```

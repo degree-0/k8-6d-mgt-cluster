@@ -1,5 +1,5 @@
 global:
-  storageClass: "longhorn-single"
+  storageClass: "longhorn"
 signoz:
   ingress:
     enabled: true

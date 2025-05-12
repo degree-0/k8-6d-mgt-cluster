@@ -5,6 +5,7 @@ This component synchronizes Kubernetes secrets with external secret management s
 ## Installation
 
 ```bash
+cd kubernetes/07-external-secrets
 helm repo add external-secrets https://charts.external-secrets.io
 helm search repo external-secrets
 helm show values external-secrets/external-secrets --version 0.9.13 > defaults.yaml

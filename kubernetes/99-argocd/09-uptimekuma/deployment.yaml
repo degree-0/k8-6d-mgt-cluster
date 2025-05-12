@@ -22,6 +22,9 @@ spec:
       - name: uptime-kuma
         image: louislam/uptime-kuma:1
         imagePullPolicy: IfNotPresent
+        envFrom:
+        - secretRef:
+            name: uptime-kuma-secret
         ports:
         - containerPort: 3001
           name: web-ui
@@ -44,10 +47,3 @@ spec:
             port: web-ui
           initialDelaySeconds: 30
           periodSeconds: 10
-        volumeMounts:
-        - name: data
-          mountPath: /app/data
-      volumes:
-      - name: data
-        persistentVolumeClaim:
-          claimName: uptime-kuma-pvc
