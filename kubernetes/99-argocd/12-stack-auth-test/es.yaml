@@ -14,13 +14,13 @@ spec:
   data:
     - secretKey: STACK_DATABASE_CONNECTION_STRING
       remoteRef:
-        key: sixdegrees/stack-auth-test/secrets
+        key: six-degrees/stack-auth-test/secrets
         property: STACK_DATABASE_CONNECTION_STRING
     - secretKey: STACK_DIRECT_DATABASE_CONNECTION_STRING
       remoteRef:
-        key: sixdegrees/stack-auth-test/secrets
+        key: six-degrees/stack-auth-test/secrets
         property: STACK_DIRECT_DATABASE_CONNECTION_STRING
     - secretKey: STACK_SERVER_SECRET
       remoteRef:
-        key: sixdegrees/stack-auth-test/secrets
+        key: six-degrees/stack-auth-test/secrets
         property: STACK_SERVER_SECRET
