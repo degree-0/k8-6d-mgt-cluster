@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stack-auth-test
+  namespace: six-degrees-apps
+spec:
+  selector:
+    matchLabels:
+      app: stack-auth-test
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: stack-auth-test
+    spec:
+      containers:
+      - name: stack-auth-test
+        image: stackauth/server:latest
+        imagePullPolicy: IfNotPresent
+        envFrom:
+        - secretRef:
+            name: stack-auth-test-secret
+        ports:
+        - containerPort: 8102
+        - containerPort: 8101
+        resources:
+          limits:
+            cpu: 200m
+            memory: 512Mi
+          requests:
+            cpu: 50m
+            memory: 128Mi
