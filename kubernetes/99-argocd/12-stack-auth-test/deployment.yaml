@@ -25,6 +25,8 @@ spec:
         envFrom:
         - secretRef:
             name: stack-auth-test-secret
+        - configMapRef:
+            name: stack-auth-test-configmap
         ports:
         - containerPort: 8102
         - containerPort: 8101
