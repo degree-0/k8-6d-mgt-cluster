@@ -4,10 +4,10 @@ metadata:
   name: stack-auth-test-configmap
   namespace: six-degrees-apps
 data:
-  NEXT_PUBLIC_STACK_API_URL: "http://stack-auth-test-api.6degrees.com.sa"
-  NEXT_PUBLIC_BROWSER_STACK_API_URL: "http://stack-auth-test-api.6degrees.com.sa"
-  NEXT_PUBLIC_STACK_DASHBOARD_URL: "http://stack-auth-test-dashboard.6degrees.com.sa"
-  NEXT_PUBLIC_BROWSER_STACK_DASHBOARD_URL: "http://stack-auth-test-dashboard.6degrees.com.sa"
+  NEXT_PUBLIC_STACK_API_URL: "https://stack-auth-test-api.6degrees.com.sa"
+  NEXT_PUBLIC_BROWSER_STACK_API_URL: "https://stack-auth-test-api.6degrees.com.sa"
+  NEXT_PUBLIC_STACK_DASHBOARD_URL: "https://stack-auth-test-dashboard.6degrees.com.sa"
+  NEXT_PUBLIC_BROWSER_STACK_DASHBOARD_URL: "https://stack-auth-test-dashboard.6degrees.com.sa"
   STACK_SEED_INTERNAL_PROJECT_ALLOW_LOCALHOST: "true"
   STACK_SEED_INTERNAL_PROJECT_SIGN_UP_ENABLED: "true"
   STACK_RUN_MIGRATIONS: "true"
