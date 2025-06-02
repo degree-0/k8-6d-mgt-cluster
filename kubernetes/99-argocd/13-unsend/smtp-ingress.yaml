@@ -6,9 +6,14 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/tcp-services-configmap: "six-degrees-apps/smtp-tcp-services"
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: "dns01-clusterissuer"
 spec:
   ingressClassName: nginx
+  tls:
+  - hosts:
+    - smtp.unsend.6degrees.com.sa
+    secretName: smtp-tls-secret
   rules:
   - host: smtp.unsend.6degrees.com.sa
     http:
