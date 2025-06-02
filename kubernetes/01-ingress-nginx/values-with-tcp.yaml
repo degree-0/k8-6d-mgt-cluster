@@ -1,4 +1,15 @@
 controller:
+  # Enable TCP services
+  config:
+    # Reference to the ConfigMap containing TCP service mappings
+    tcp-services-configmap: "default/nginx-tcp-services"
+    udp-services-configmap: "default/nginx-udp-services"
+  
+  # Add explicit command line arguments for TCP/UDP services
+  extraArgs:
+    tcp-services-configmap: "default/nginx-tcp-services"
+    udp-services-configmap: "default/nginx-udp-services"
+  
   service:
     ports:
       http: 80
@@ -17,7 +28,12 @@ controller:
       smtp-alt: 2587
       smtps: 465
       smtps-alt: 2465
-  config:
-    # Enable TCP and UDP services
-    tcp-services-configmap: "default/nginx-tcp-services"
-    udp-services-configmap: "default/nginx-udp-services" 
+    nodePorts:
+      http: ""
+      https: ""
+      tcp:
+        25: ""
+        587: ""
+        2587: ""
+        465: ""
+        2465: "" 

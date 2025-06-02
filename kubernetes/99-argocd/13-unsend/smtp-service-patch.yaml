@@ -1,0 +1,32 @@
+spec:
+  ports:
+  - appProtocol: http
+    name: http
+    port: 80
+    protocol: TCP
+    targetPort: http
+  - appProtocol: https
+    name: https
+    port: 443
+    protocol: TCP
+    targetPort: https
+  - name: smtp
+    port: 25
+    protocol: TCP
+    targetPort: 25
+  - name: smtp-submission
+    port: 587
+    protocol: TCP
+    targetPort: 587
+  - name: smtp-alt
+    port: 2587
+    protocol: TCP
+    targetPort: 2587
+  - name: smtps
+    port: 465
+    protocol: TCP
+    targetPort: 465
+  - name: smtps-alt
+    port: 2465
+    protocol: TCP
+    targetPort: 2465 

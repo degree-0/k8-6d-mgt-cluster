@@ -14,8 +14,4 @@ spec:
           email: mohannad.otaibi@gmail.com
           apiTokenSecretRef:
             name: cloudflare-api-token-secret
-            key: api-token
-      selector:
-        dnsNames:
-        - "*.6degrees.com.sa"
-        - "6degrees.com.sa" 
+            key: api-token 
