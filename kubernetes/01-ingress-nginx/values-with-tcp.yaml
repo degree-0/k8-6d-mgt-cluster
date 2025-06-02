@@ -1,0 +1,23 @@
+controller:
+  service:
+    ports:
+      http: 80
+      https: 443
+      # SMTP Ports
+      smtp: 25
+      smtp-submission: 587
+      smtp-alt: 2587
+      smtps: 465
+      smtps-alt: 2465
+    targetPorts:
+      http: http
+      https: https
+      smtp: 25
+      smtp-submission: 587
+      smtp-alt: 2587
+      smtps: 465
+      smtps-alt: 2465
+  config:
+    # Enable TCP and UDP services
+    tcp-services-configmap: "default/nginx-tcp-services"
+    udp-services-configmap: "default/nginx-udp-services" 
