@@ -4,23 +4,8 @@ metadata:
   name: unsend-smtp-server
   namespace: six-degrees-apps
   annotations:
-    nginx.ingress.kubernetes.io/tcp-services-configmap: "six-degrees-apps/smtp-tcp-services"
-    nginx.ingress.kubernetes.io/stream-snippet: |
-      upstream smtp_backend {
-          server unsend-smtp-server.six-degrees-apps.svc.cluster.local:25;
-      }
-      upstream smtp_submission_backend {
-          server unsend-smtp-server.six-degrees-apps.svc.cluster.local:587;
-      }
-      upstream smtp_alt_backend {
-          server unsend-smtp-server.six-degrees-apps.svc.cluster.local:2587;
-      }
-      upstream smtps_backend {
-          server unsend-smtp-server.six-degrees-apps.svc.cluster.local:465;
-      }
-      upstream smtps_alt_backend {
-          server unsend-smtp-server.six-degrees-apps.svc.cluster.local:2465;
-      }
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   ingressClassName: nginx
   rules:
