@@ -33,6 +33,10 @@ spec:
             configMapKeyRef:
               name: unsend-configmap
               key: UNSEND_BASE_URL
+        - name: UNSEND_API_KEY_PATH
+          value: "/certs/tls.key"
+        - name: UNSEND_API_CERT_PATH
+          value: "/certs/tls.crt"
         envFrom:
         - secretRef:
             name: unsend-secret
@@ -49,6 +53,10 @@ spec:
           name: smtps
         - containerPort: 2465
           name: smtps-alt
+        volumeMounts:
+        - name: smtp-tls-certs
+          mountPath: /certs
+          readOnly: true
         resources:
           limits:
             cpu: 200m
@@ -56,3 +64,7 @@ spec:
           requests:
             cpu: 50m
             memory: 128Mi
+      volumes:
+      - name: smtp-tls-certs
+        secret:
+          secretName: smtp-tls-secret

@@ -1,0 +1,16 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: smtp-tls-certificate
+  namespace: six-degrees-apps
+spec:
+  secretName: smtp-tls-secret
+  issuerRef:
+    name: dns01-clusterissuer
+    kind: ClusterIssuer
+  dnsNames:
+  - smtp.unsend.6degrees.com.sa
+  usages:
+  - digital signature
+  - key encipherment
+  - server auth 

@@ -1,0 +1,21 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: dns01-clusterissuer
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: mohannad.otaibi@gmail.com
+    privateKeySecretRef:
+      name: dns01-clusterissuer-secret
+    solvers:
+    - dns01:
+        cloudflare:
+          email: mohannad.otaibi@gmail.com
+          apiTokenSecretRef:
+            name: cloudflare-api-token-secret
+            key: api-token
+      selector:
+        dnsNames:
+        - "*.6degrees.com.sa"
+        - "6degrees.com.sa" 
