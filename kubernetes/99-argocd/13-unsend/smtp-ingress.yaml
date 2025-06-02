@@ -4,6 +4,7 @@ metadata:
   name: unsend-smtp-server
   namespace: six-degrees-apps
   annotations:
+    nginx.ingress.kubernetes.io/tcp-services-configmap: "six-degrees-apps/smtp-tcp-services"
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:

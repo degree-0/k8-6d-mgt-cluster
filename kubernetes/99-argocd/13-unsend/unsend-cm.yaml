@@ -8,6 +8,7 @@ data:
   NEXTAUTH_URL: "https://unsend.6degrees.com.sa"
   SMTP_HOST: "smtp.unsend.6degrees.com.sa"
   SMTP_USER: "unsend" # Example SMTP user"
+  SMTP_AUTH_USERNAME: "unsend"
   AWS_DEFAULT_REGION: "us-east-1"
   DOCKER_OUTPUT: "1"
   API_RATE_LIMIT: "1"

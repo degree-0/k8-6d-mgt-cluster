@@ -22,6 +22,17 @@ spec:
       - name: unsend-smtp-server
         image: unsend/smtp-proxy:latest
         imagePullPolicy: IfNotPresent
+        env:
+        - name: SMTP_AUTH_USERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: unsend-configmap
+              key: SMTP_AUTH_USERNAME
+        - name: UNSEND_BASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: unsend-configmap
+              key: UNSEND_BASE_URL
         envFrom:
         - secretRef:
             name: unsend-secret
