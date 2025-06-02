@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unsend
+  namespace: six-degrees-apps
+spec:
+  selector:
+    matchLabels:
+      app: unsend
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: unsend
+    spec:
+      containers:
+      - name: unsend
+        image: unsend/unsend:latest
+        imagePullPolicy: IfNotPresent
+        envFrom:
+        - secretRef:
+            name: unsend-secret
+        - configMapRef:
+            name: unsend-configmap
+        ports:
+        - containerPort: 3000
+        resources:
+          limits:
+            cpu: 200m
+            memory: 512Mi
+          requests:
+            cpu: 50m
+            memory: 128Mi
