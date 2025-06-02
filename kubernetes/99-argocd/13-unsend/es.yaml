@@ -1,0 +1,50 @@
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: unsend-secret
+  namespace: six-degrees-apps
+spec:
+  refreshInterval: "15m"
+  secretStoreRef:
+    name: vault-backend
+    kind: ClusterSecretStore
+  target:
+    name: unsend-secret
+    creationPolicy: Owner
+  data:
+    - secretKey: POSTGRES_USER
+      remoteRef:
+        key: six-degrees/unsend/secrets
+        property: POSTGRES_USER
+    - secretKey: POSTGRES_PASSWORD
+      remoteRef:
+        key: six-degrees/unsend/secrets
+        property: POSTGRES_PASSWORD
+    - secretKey: POSTGRES_DB
+      remoteRef:
+        key: six-degrees/unsend/secrets
+        property: POSTGRES_DB
+    - secretKey: DATABASE_URL
+      remoteRef:
+        key: six-degrees/unsend/secrets
+        property: DATABASE_URL
+    - secretKey: NEXTAUTH_SECRET
+      remoteRef:
+        key: six-degrees/unsend/secrets
+        property: NEXTAUTH_SECRET
+    - secretKey: GITHUB_ID
+      remoteRef:
+        key: six-degrees/unsend/secrets
+        property: GITHUB_ID
+    - secretKey: GITHUB_SECRET
+      remoteRef:
+        key: six-degrees/unsend/secrets
+        property: GITHUB_SECRET
+    - secretKey: AWS_SECRET_KEY
+      remoteRef:
+        key: six-degrees/unsend/secrets
+        property: AWS_SECRET_KEY
+    - secretKey: AWS_ACCESS_KEY
+      remoteRef:
+        key: six-degrees/unsend/secrets
+        property: AWS_ACCESS_KEY
