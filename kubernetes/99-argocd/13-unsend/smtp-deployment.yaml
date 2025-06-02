@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unsend-smtp-server
+  namespace: six-degrees-apps
+spec:
+  selector:
+    matchLabels:
+      app: unsend-smtp-server
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: unsend-smtp-server
+    spec:
+      containers:
+      - name: unsend-smtp-server
+        image: unsend/smtp-proxy:latest
+        imagePullPolicy: IfNotPresent
+        envFrom:
+        - secretRef:
+            name: unsend-secret
+        - configMapRef:
+            name: unsend-configmap
+        ports:
+        - containerPort: 25
+          name: smtp
+        - containerPort: 587
+          name: smtp-submission
+        - containerPort: 2587
+          name: smtp-alt
+        - containerPort: 465
+          name: smtps
+        - containerPort: 2465
+          name: smtps-alt
+        resources:
+          limits:
+            cpu: 200m
+            memory: 512Mi
+          requests:
+            cpu: 50m
+            memory: 128Mi

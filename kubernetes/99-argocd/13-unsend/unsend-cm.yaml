@@ -6,8 +6,9 @@ metadata:
 data:
   REDIS_URL: "redis://redis:6379"
   NEXTAUTH_URL: "https://unsend.6degrees.com.sa"
-  SMTP_HOST: "smtp.mailtrap.io  # Example SMTP host"
+  SMTP_HOST: "smtp.unsend.6degrees.com.sa"
   SMTP_USER: "unsend" # Example SMTP user"
   AWS_DEFAULT_REGION: "us-east-1"
   DOCKER_OUTPUT: "1"
   API_RATE_LIMIT: "1"
+  UNSEND_BASE_URL: "https://unsend.6degrees.com.sa"
