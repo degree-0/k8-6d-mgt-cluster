@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: stack-auth-test
+  name: stack-auth
   namespace: six-degrees-apps
   annotations:
     cert-manager.io/cluster-issuer: http01-clusterissuer
@@ -11,27 +11,27 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - stack-auth-test-api.6degrees.com.sa
-        - stack-auth-test-dashboard.6degrees.com.sa
-      secretName: stack-auth-test-tls
+        - sso.6degrees.com.sa
+        - sso.dashboard.6degrees.com.sa
+      secretName: stack-auth-tls
   rules:
-    - host: stack-auth-test-api.6degrees.com.sa
+    - host: sso.6degrees.com.sa
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: stack-auth-test-service
+                name: stack-auth-service
                 port:
                   number: 8102
-    - host: stack-auth-test-dashboard.6degrees.com.sa
+    - host: sso.dashboard.6degrees.com.sa
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: stack-auth-test-service
+                name: stack-auth-service
                 port:
                   number: 8101

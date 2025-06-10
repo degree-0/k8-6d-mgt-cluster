@@ -1,12 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: stack-auth-test
+  name: stack-auth
   namespace: six-degrees-apps
 spec:
   selector:
     matchLabels:
-      app: stack-auth-test
+      app: stack-auth
   replicas: 1
   strategy:
     type: RollingUpdate
@@ -16,17 +16,17 @@ spec:
   template:
     metadata:
       labels:
-        app: stack-auth-test
+        app: stack-auth
     spec:
       containers:
-      - name: stack-auth-test
+      - name: stack-auth
         image: stackauth/server:latest
         imagePullPolicy: IfNotPresent
         envFrom:
         - secretRef:
-            name: stack-auth-test-secret
+            name: stack-auth-secret
         - configMapRef:
-            name: stack-auth-test-configmap
+            name: stack-auth-configmap
         ports:
         - containerPort: 8102
         - containerPort: 8101
