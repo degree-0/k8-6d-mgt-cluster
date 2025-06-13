@@ -21,7 +21,7 @@ spec:
       containers:
       - name: stack-auth
         image: stackauth/server:latest
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         envFrom:
         - secretRef:
             name: stack-auth-secret
