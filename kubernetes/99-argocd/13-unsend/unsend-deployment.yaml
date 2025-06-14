@@ -21,7 +21,7 @@ spec:
       containers:
       - name: unsend
         image: unsend/unsend:latest
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         envFrom:
         - secretRef:
             name: unsend-secret
