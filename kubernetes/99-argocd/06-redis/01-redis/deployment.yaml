@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: redis
+  namespace: redis
   labels:
     app: redis
 spec:
@@ -19,7 +20,13 @@ spec:
         image: redis:latest
         ports:
         - containerPort: 6379
-        command: ["redis-server", "--bind", "0.0.0.0", "--port", "6379"]
+        command: ["redis-server", "--bind", "0.0.0.0", "--port", "6379", "--requirepass", "$(REDIS_PASSWORD)"]
+        env:
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: redis-auth
+              key: redis-password
         resources:
           requests:
             memory: "128Mi"
