@@ -8,5 +8,6 @@ helm repo update
 helm search repo kubetail
 helm show values kubetail/kubetail --version 0.9.13 > defaults.yaml
 
+kubectl apply -f external-secrets.yaml
 helm upgrade --install kubetail kubetail/kubetail --namespace kubetail --create-namespace -f values.yaml
 ```

@@ -13,6 +13,10 @@ kubetail:
         cert-manager.io/cluster-issuer: http01-clusterissuer
         nginx.ingress.kubernetes.io/ssl-redirect: "true"
         nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+        nginx.ingress.kubernetes.io/auth-type: basic
+        nginx.ingress.kubernetes.io/auth-secret: kubetail-secret
+        nginx.ingress.kubernetes.io/auth-realm: "Authentication Required"
+
       hosts:
         - kubetail.6degrees.com.sa
       path: /
