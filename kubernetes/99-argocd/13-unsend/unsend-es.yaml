@@ -48,3 +48,7 @@ spec:
       remoteRef:
         key: six-degrees/unsend/secrets
         property: AWS_ACCESS_KEY
+    - secretKey: REDIS_URL
+      remoteRef:
+        key: six-degrees/unsend/secrets
+        property: REDIS_URL
