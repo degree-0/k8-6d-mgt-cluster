@@ -35,4 +35,9 @@ spec:
   - name: smtps-alt
     port: 2465
     protocol: TCP
-    targetPort: 2465 
+    targetPort: 2465
+
+  - name: redis
+    port: 6379
+    protocol: TCP
+    targetPort: 6379 

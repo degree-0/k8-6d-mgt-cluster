@@ -27,4 +27,4 @@ spec:
     port: 2465
     targetPort: 2465
     protocol: TCP
-  type: ClusterIP 
+  type: ClusterIP

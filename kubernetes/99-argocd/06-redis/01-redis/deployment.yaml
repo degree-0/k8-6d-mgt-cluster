@@ -19,7 +19,8 @@ spec:
       - name: redis
         image: redis:latest
         ports:
-        - containerPort: 6379
+        - name: redis-tcp
+          containerPort: 6379
         command: ["redis-server", "--bind", "0.0.0.0", "--port", "6379", "--requirepass", "$(REDIS_PASSWORD)"]
         env:
         - name: REDIS_PASSWORD
