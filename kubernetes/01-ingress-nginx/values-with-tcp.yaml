@@ -20,6 +20,8 @@ controller:
       smtp-alt: 2587
       smtps: 465
       smtps-alt: 2465
+      # Redis Port
+      redis: 6379
     targetPorts:
       http: http
       https: https
@@ -28,6 +30,7 @@ controller:
       smtp-alt: 2587
       smtps: 465
       smtps-alt: 2465
+      redis: 6379
     nodePorts:
       http: ""
       https: ""
@@ -36,4 +39,5 @@ controller:
         587: ""
         2587: ""
         465: ""
-        2465: "" 
+        2465: ""
+        6379: "" 
