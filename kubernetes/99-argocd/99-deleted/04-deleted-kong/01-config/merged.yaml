@@ -1,0 +1,25 @@
+_format_version: "3.0"
+_info:
+  select_tags:
+  - team-a
+consumers:
+- custom_id: SOME_CUSTOM_ID
+  keyauth_credentials:
+  - key: apikeyapikeyapikey
+  username: mohannad-admin
+plugins:
+- config:
+    minute: 10
+  name: rate-limiting
+  service: typicode-posts
+- name: key-auth
+services:
+- host: jsonplaceholder.typicode.com
+  name: typicode-posts
+  path: /posts
+  routes:
+  - methods:
+    - GET
+    name: Passthrough
+    paths:
+    - /dummy-posts

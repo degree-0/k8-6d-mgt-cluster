@@ -1,0 +1,84 @@
+# CouchDB Helm Chart Custom Values
+# This file contains customizations for the CouchDB deployment
+
+# Cluster configuration
+clusterSize: 1
+
+# Disable admin party mode - require authentication
+allowAdminParty: false
+
+# Auto setup cluster after installation
+# Disabled for single-node cluster - will be set up manually
+autoSetup:
+  enabled: false
+  defaultDatabases:
+    - _global_changes
+
+# Admin secret configuration
+# Note: Use external-secrets.yaml to manage secrets from Vault
+createAdminSecret: false
+extraSecretName: couchdb-auth
+
+# Persistent volume configuration
+persistentVolume:
+  enabled: true
+  accessModes:
+    - ReadWriteOnce
+  size: 20Gi
+  storageClass: longhorn  # Explicitly set to longhorn (cluster has multiple defaults)
+
+# Service configuration
+service:
+  enabled: true
+  type: ClusterIP
+  externalPort: 5984
+  targetPort: 5984
+
+# Ingress configuration
+ingress:
+  enabled: true
+  className: nginx
+  hosts:
+    - couchdb.6degrees.com.sa
+  path: /
+  annotations:
+    cert-manager.io/cluster-issuer: http01-clusterissuer
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+  tls:
+    - hosts:
+        - couchdb.6degrees.com.sa
+      secretName: couchdb-tls
+
+# Resource limits
+resources:
+  requests:
+    cpu: 500m
+    memory: 512Mi
+  limits:
+    cpu: 2000m
+    memory: 2Gi
+
+# CouchDB configuration
+couchdbConfig:
+  couchdb:
+    uuid: 82d4736b1385fb0576c2aa73fbae6fc9  # Unique identifier for this CouchDB server instance
+  chttpd:
+    bind_address: any
+    require_valid_user: false
+    enable_cors: true
+  cors:
+    origins: "*"  # Allow all origins (for Obsidian sync)
+    credentials: true
+    headers: "accept, authorization, content-type, origin, referer"
+    methods: "GET, HEAD, POST, PUT, DELETE, OPTIONS"
+
+# Network policy
+networkPolicy:
+  enabled: true
+
+# Service account
+serviceAccount:
+  enabled: true
+  create: true
+
