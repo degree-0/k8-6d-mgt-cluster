@@ -30,6 +30,8 @@ kubectl logs -l app=stack-auth -n six-degrees-apps --tail=50
 
 ClickHouse must be ready before Stack Auth migrations finish. If Stack Auth crash-loops, check ClickHouse pod first.
 
+Stack Auth `:latest` needs at least **2Gi memory** — the Bulldozer Postgres→ClickHouse sync plus two Next.js processes OOM at 512Mi.
+
 ## Retirement
 
 ```bash
