@@ -1,16 +1,3 @@
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: stack-auth-clickhouse-data
-  namespace: six-degrees-apps
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: longhorn
-  resources:
-    requests:
-      storage: 5Gi
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -68,8 +55,7 @@ spec:
             periodSeconds: 30
       volumes:
         - name: data
-          persistentVolumeClaim:
-            claimName: stack-auth-clickhouse-data
+          emptyDir: {}
 ---
 apiVersion: v1
 kind: Service

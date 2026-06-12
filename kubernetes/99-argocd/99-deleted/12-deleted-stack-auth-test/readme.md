@@ -15,7 +15,7 @@ Test deployment of [Stack Auth](https://stack-auth.com/) — replaced by Keycloa
 `:latest` requires ClickHouse since 2026-01-28. This folder deploys:
 
 - `stackauth/server:latest`
-- `stack-auth-clickhouse` (ClickHouse 25.10, 5Gi Longhorn PVC)
+- `stack-auth-clickhouse` (ClickHouse 25.10, ephemeral `emptyDir` — no PVC)
 - `STACK_CLICKHOUSE_URL` + admin/external passwords via `stack-auth-clickhouse-secret`
 
 `STACK_RUN_SEED_SCRIPT` is `false` — the Postgres DB is already populated; re-seeding breaks on schema drift.
@@ -28,15 +28,13 @@ Splitting dashboard (`sso.dashboard.*`) and API (`sso.*`) on different subdomain
 
 After sync, open **`https://sso.6degrees.com.sa/projects`** or **`https://sso.6degrees.com.sa/handler/sign-in`**.
 
-ClickHouse must be ready before Stack Auth migrations finish.
+ClickHouse uses ephemeral `emptyDir` (no PVC) — data is rebuilt from Postgres on pod restart. ClickHouse must be ready before Stack Auth migrations finish.
 
 ```bash
 kubectl get pods -n six-degrees-apps | grep stack-auth
 kubectl logs -l app=stack-auth-clickhouse -n six-degrees-apps --tail=30
 kubectl logs -l app=stack-auth -n six-degrees-apps --tail=50
 ```
-
-ClickHouse must be ready before Stack Auth migrations finish. If Stack Auth crash-loops, check ClickHouse pod first.
 
 Stack Auth `:latest` needs at least **2Gi memory** — the Bulldozer Postgres→ClickHouse sync plus two Next.js processes OOM at 512Mi.
 
