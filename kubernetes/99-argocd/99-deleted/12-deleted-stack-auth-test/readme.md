@@ -10,22 +10,25 @@ Test deployment of [Stack Auth](https://stack-auth.com/) — replaced by Keycloa
 - **Secrets**: Vault path `six-degrees/stack-auth-test/secrets`
 - **Database**: External PostgreSQL (connection string in Vault)
 
-## Image version
+## Stack Auth + ClickHouse
 
-Pinned to `stackauth/server:6c02787` (pushed 2025-05-23, same day as initial deploy).
+`:latest` requires ClickHouse since 2026-01-28. This folder deploys:
 
-Do **not** use `:latest` — ClickHouse became mandatory in commit `484c3a63` (2026-01-28). With `imagePullPolicy: Always`, every pod restart pulled a broken image.
+- `stackauth/server:latest`
+- `stack-auth-clickhouse` (ClickHouse 25.10, 5Gi Longhorn PVC)
+- `STACK_CLICKHOUSE_URL` + admin/external passwords via `stack-auth-clickhouse-secret`
+
+`STACK_RUN_SEED_SCRIPT` is `false` — the Postgres DB is already populated; re-seeding breaks on schema drift.
 
 ## Troubleshooting 502 Bad Gateway
 
-A nginx 502 means the Stack Auth pod is not healthy (no backend endpoints).
-
 ```bash
-kubectl get pods -n six-degrees-apps -l app=stack-auth
+kubectl get pods -n six-degrees-apps | grep stack-auth
+kubectl logs -l app=stack-auth-clickhouse -n six-degrees-apps --tail=30
 kubectl logs -l app=stack-auth -n six-degrees-apps --tail=50
 ```
 
-If logs show `Missing environment variable: STACK_CLICKHOUSE_URL`, the deployment is running a post-2026-01-28 image — re-sync and confirm `deployment.yaml` has `stackauth/server:6c02787`.
+ClickHouse must be ready before Stack Auth migrations finish. If Stack Auth crash-loops, check ClickHouse pod first.
 
 ## Retirement
 
