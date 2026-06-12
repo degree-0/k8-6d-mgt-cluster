@@ -18,15 +18,33 @@ Test deployment of [Stack Auth](https://stack-auth.com/) — replaced by Keycloa
 - `stack-auth-clickhouse` (ClickHouse 25.10, ephemeral `emptyDir` — no PVC)
 - `STACK_CLICKHOUSE_URL` + admin/external passwords via `stack-auth-clickhouse-secret`
 
-`STACK_RUN_SEED_SCRIPT` is `false` — the Postgres DB is already populated; re-seeding breaks on schema drift.
+`STACK_RUN_SEED_SCRIPT` is `true` — upserts the internal dashboard project keys and trusted domains on startup. Internal project keys are synced from Vault via `stack-auth-secret` (see `es.yaml`).
+
+### Vault keys (`six-degrees/stack-auth-test/secrets`)
+
+| Property | Purpose |
+|---|---|
+| `STACK_DATABASE_CONNECTION_STRING` | Postgres (pooled) |
+| `STACK_DIRECT_DATABASE_CONNECTION_STRING` | Postgres (direct) |
+| `STACK_SERVER_SECRET` | Stack Auth server secret |
+| `NEXT_PUBLIC_STACK_PROJECT_ID` | Dashboard project id (`internal`) |
+| `NEXT_PUBLIC_STACK_PUBLISHABLE_CLIENT_KEY` | Baked-in publishable key (must match seed) |
+| `STACK_SECRET_SERVER_KEY` | Baked-in secret server key (must match seed) |
+| `STACK_SEED_INTERNAL_PROJECT_PUBLISHABLE_CLIENT_KEY` | Same value as publishable key above |
+| `STACK_SEED_INTERNAL_PROJECT_SECRET_SERVER_KEY` | Same value as secret server key above |
+| `STACK_SEED_INTERNAL_PROJECT_SUPER_SECRET_ADMIN_KEY` | Admin key for internal project |
 
 ## Dashboard redirect loop
 
-Splitting dashboard (`sso.dashboard.*`) and API (`sso.*`) on different subdomains breaks session cookies — the dashboard never sees auth and loops on `/projects`.
+If `/` ↔ `/projects` loops with no login form, check logs for:
 
-**Fix:** serve both on `https://sso.6degrees.com.sa` (`/api` → API, `/` → dashboard). Do not use `sso.dashboard.*` — it breaks cookies and is no longer in the ingress.
+```
+The publishable key is not valid for the project "internal"
+```
 
-After sync, open **`https://sso.6degrees.com.sa/projects`** or **`https://sso.6degrees.com.sa/handler/sign-in`**.
+That means dashboard env keys don't match Postgres. Fix: stable `STACK_SEED_INTERNAL_PROJECT_*` keys in Vault + `STACK_RUN_SEED_SCRIPT: true` (synced via `es.yaml`).
+
+Splitting dashboard and API across subdomains also breaks cookies — use **`https://sso.6degrees.com.sa`** only (`/api` → API, `/` → dashboard).
 
 ClickHouse uses ephemeral `emptyDir` (no PVC) — data is rebuilt from Postgres on pod restart. ClickHouse must be ready before Stack Auth migrations finish.
 
@@ -49,7 +67,7 @@ kubectl get all,ingress,externalsecret -n six-degrees-apps | grep stack-auth
 
 # 3. Delete any leftover secrets (if ArgoCD missed them)
 kubectl delete externalsecret stack-auth-secret -n six-degrees-apps --ignore-not-found
-kubectl delete secret stack-auth-secret stack-auth-tls stack-auth-test-tls -n six-degrees-apps --ignore-not-found
+kubectl delete secret stack-auth-secret stack-auth-internal-project-secret stack-auth-tls stack-auth-test-tls -n six-degrees-apps --ignore-not-found
 ```
 
 ## PostgreSQL cleanup (pgAdmin)
