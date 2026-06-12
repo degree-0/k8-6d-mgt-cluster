@@ -7,6 +7,7 @@ metadata:
     cert-manager.io/cluster-issuer: http01-clusterissuer
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/use-forwarded-headers: "true"
 spec:
   ingressClassName: nginx
   tls:
@@ -15,16 +16,43 @@ spec:
         - sso.dashboard.6degrees.com.sa
       secretName: stack-auth-tls
   rules:
+    # API + dashboard on one host so auth cookies are same-origin
     - host: sso.6degrees.com.sa
       http:
         paths:
-          - path: /
+          - path: /api
             pathType: Prefix
             backend:
               service:
                 name: stack-auth-service
                 port:
                   number: 8102
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: stack-auth-service
+                port:
+                  number: 8101
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: stack-auth-dashboard-redirect
+  namespace: six-degrees-apps
+  annotations:
+    cert-manager.io/cluster-issuer: http01-clusterissuer
+    nginx.ingress.kubernetes.io/permanent-redirect: https://sso.6degrees.com.sa$request_uri
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - sso.dashboard.6degrees.com.sa
+      secretName: stack-auth-tls
+  rules:
     - host: sso.dashboard.6degrees.com.sa
       http:
         paths:

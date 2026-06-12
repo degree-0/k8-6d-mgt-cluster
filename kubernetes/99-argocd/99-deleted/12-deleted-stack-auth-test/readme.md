@@ -20,7 +20,15 @@ Test deployment of [Stack Auth](https://stack-auth.com/) — replaced by Keycloa
 
 `STACK_RUN_SEED_SCRIPT` is `false` — the Postgres DB is already populated; re-seeding breaks on schema drift.
 
-## Troubleshooting 502 Bad Gateway
+## Dashboard redirect loop
+
+Splitting dashboard (`sso.dashboard.*`) and API (`sso.*`) on different subdomains breaks session cookies — the dashboard never sees auth and loops on `/projects`.
+
+**Fix:** serve both on `https://sso.6degrees.com.sa` (`/api` → API, `/` → dashboard). `sso.dashboard.*` redirects to the main host.
+
+After sync, open **`https://sso.6degrees.com.sa/projects`** or **`https://sso.6degrees.com.sa/handler/sign-in`**.
+
+ClickHouse must be ready before Stack Auth migrations finish.
 
 ```bash
 kubectl get pods -n six-degrees-apps | grep stack-auth
