@@ -6,7 +6,7 @@ Test deployment of [Stack Auth](https://stack-auth.com/) — replaced by Keycloa
 
 - **ArgoCD app**: `stack-auth-test` (project: `six-degrees`)
 - **Namespace**: `six-degrees-apps`
-- **URLs**: `sso.6degrees.com.sa`, `sso.dashboard.6degrees.com.sa`
+- **URL**: `sso.6degrees.com.sa` (dashboard + API on one host; `sso.dashboard.*` deprecated)
 - **Secrets**: Vault path `six-degrees/stack-auth-test/secrets`
 - **Database**: External PostgreSQL (connection string in Vault)
 
@@ -24,7 +24,7 @@ Test deployment of [Stack Auth](https://stack-auth.com/) — replaced by Keycloa
 
 Splitting dashboard (`sso.dashboard.*`) and API (`sso.*`) on different subdomains breaks session cookies — the dashboard never sees auth and loops on `/projects`.
 
-**Fix:** serve both on `https://sso.6degrees.com.sa` (`/api` → API, `/` → dashboard). `sso.dashboard.*` redirects to the main host.
+**Fix:** serve both on `https://sso.6degrees.com.sa` (`/api` → API, `/` → dashboard). Do not use `sso.dashboard.*` — it breaks cookies and is no longer in the ingress.
 
 After sync, open **`https://sso.6degrees.com.sa/projects`** or **`https://sso.6degrees.com.sa/handler/sign-in`**.
 
@@ -70,4 +70,4 @@ Remove `six-degrees/stack-auth-test/secrets` from Vault once nothing references 
 
 ## DNS
 
-`sso.6degrees.com.sa` and `sso.dashboard.6degrees.com.sa` will be free for Keycloak after retirement.
+`sso.6degrees.com.sa` will be free for Keycloak after retirement. Remove or repoint DNS for `sso.dashboard.6degrees.com.sa` if it still exists.
