@@ -20,8 +20,9 @@ spec:
     spec:
       containers:
       - name: stack-auth
-        image: stackauth/server:latest
-        imagePullPolicy: Always
+        # Pinned to 2025-05-23 (initial deploy). :latest requires ClickHouse since 2026-01-28.
+        image: stackauth/server:6c02787
+        imagePullPolicy: IfNotPresent
         envFrom:
         - secretRef:
             name: stack-auth-secret
