@@ -48,6 +48,15 @@ spec:
       remoteRef:
         key: six-degrees/stack-auth-test/secrets
         property: STACK_SEED_INTERNAL_PROJECT_SUPER_SECRET_ADMIN_KEY
+    # Entrypoint reads these for the dashboard (not STACK_SEED_* / NEXT_PUBLIC_* alone)
+    - secretKey: STACK_INTERNAL_PROJECT_PUBLISHABLE_CLIENT_KEY
+      remoteRef:
+        key: six-degrees/stack-auth-test/secrets
+        property: STACK_INTERNAL_PROJECT_PUBLISHABLE_CLIENT_KEY
+    - secretKey: STACK_INTERNAL_PROJECT_SECRET_SERVER_KEY
+      remoteRef:
+        key: six-degrees/stack-auth-test/secrets
+        property: STACK_INTERNAL_PROJECT_SECRET_SERVER_KEY
     - secretKey: STACK_S3_ENDPOINT
       remoteRef:
         key: six-degrees/stack-auth-test/secrets
