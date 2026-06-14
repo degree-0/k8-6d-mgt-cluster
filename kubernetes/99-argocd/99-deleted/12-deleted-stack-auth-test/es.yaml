@@ -57,6 +57,34 @@ spec:
       remoteRef:
         key: six-degrees/stack-auth-test/secrets
         property: STACK_INTERNAL_PROJECT_SECRET_SERVER_KEY
+    - secretKey: STACK_FREESTYLE_API_KEY
+      remoteRef:
+        key: six-degrees/stack-auth-test/secrets
+        property: STACK_FREESTYLE_API_KEY
+    - secretKey: STACK_EMAILABLE_API_KEY
+      remoteRef:
+        key: six-degrees/stack-auth-test/secrets
+        property: STACK_EMAILABLE_API_KEY
+    - secretKey: STACK_EMAIL_HOST
+      remoteRef:
+        key: six-degrees/stack-auth-test/secrets
+        property: STACK_EMAIL_HOST
+    - secretKey: STACK_EMAIL_PORT
+      remoteRef:
+        key: six-degrees/stack-auth-test/secrets
+        property: STACK_EMAIL_PORT
+    - secretKey: STACK_EMAIL_USERNAME
+      remoteRef:
+        key: six-degrees/stack-auth-test/secrets
+        property: STACK_EMAIL_USERNAME
+    - secretKey: STACK_EMAIL_PASSWORD
+      remoteRef:
+        key: six-degrees/stack-auth-test/secrets
+        property: STACK_EMAIL_PASSWORD
+    - secretKey: STACK_EMAIL_SENDER
+      remoteRef:
+        key: six-degrees/stack-auth-test/secrets
+        property: STACK_EMAIL_SENDER
     - secretKey: STACK_S3_ENDPOINT
       remoteRef:
         key: six-degrees/stack-auth-test/secrets
