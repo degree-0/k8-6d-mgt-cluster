@@ -61,6 +61,18 @@ spec:
       remoteRef:
         key: six-degrees/stack-auth-test/secrets
         property: STACK_FREESTYLE_API_KEY
+    - secretKey: STACK_VERCEL_SANDBOX_TOKEN
+      remoteRef:
+        key: six-degrees/stack-auth-test/secrets
+        property: STACK_VERCEL_SANDBOX_TOKEN
+    - secretKey: STACK_VERCEL_SANDBOX_TEAM_ID
+      remoteRef:
+        key: six-degrees/stack-auth-test/secrets
+        property: STACK_VERCEL_SANDBOX_TEAM_ID
+    - secretKey: STACK_VERCEL_SANDBOX_PROJECT_ID
+      remoteRef:
+        key: six-degrees/stack-auth-test/secrets
+        property: STACK_VERCEL_SANDBOX_PROJECT_ID
     - secretKey: STACK_EMAILABLE_API_KEY
       remoteRef:
         key: six-degrees/stack-auth-test/secrets
