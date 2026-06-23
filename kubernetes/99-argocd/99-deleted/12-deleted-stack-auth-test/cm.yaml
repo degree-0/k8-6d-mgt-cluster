@@ -9,8 +9,6 @@ data:
   NEXT_PUBLIC_BROWSER_STACK_API_URL: "https://sso.6degrees.com.sa"
   NEXT_PUBLIC_STACK_DASHBOARD_URL: "https://sso.6degrees.com.sa"
   NEXT_PUBLIC_BROWSER_STACK_DASHBOARD_URL: "https://sso.6degrees.com.sa"
-  NEXT_PUBLIC_SERVER_STACK_API_URL: "https://sso.6degrees.com.sa"
-  NEXT_PUBLIC_SERVER_STACK_DASHBOARD_URL: "https://sso.6degrees.com.sa"
   STACK_SEED_INTERNAL_PROJECT_ALLOW_LOCALHOST: "false"
   STACK_SEED_INTERNAL_PROJECT_SIGN_UP_ENABLED: "false"
   STACK_RUN_MIGRATIONS: "true"
